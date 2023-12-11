@@ -1,0 +1,11 @@
+	
+	/* 引入自定义字体 */
+	@font-face {
+	  font-family: YourFontName;
+	  src: url('../font/font1/ttf') format('truetype');
+	}
+	
+	/* 设置全局样式 */
+	html, body {
+	  font-family: YourFontName, sans-serif; /* 使用你定义的字体，如果加载失败则使用备用的 sans-serif 字体 */
+	}

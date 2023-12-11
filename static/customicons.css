@@ -1,0 +1,33 @@
+@font-face {
+	font-family: "customicons";
+	/* Project id 2878519 */
+	/* src:url('/static/customicons.ttf') format('truetype'); */
+	src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/font1.ttf') format('truetype');
+
+}
+
+/* 全局字体设置 */
+/* body{
+	font-family: "customicons" !important;
+} */
+view {
+	font-family: "customicons", Fallback, sans-serif;
+}
+.view {
+	font-family: "customicons", Fallback, sans-serif;
+}
+.customicons {
+	font-family: "customicons", Fallback, sans-serif;
+}
+
+.youxi:before {
+	content: "\e60e";
+}
+
+.wenjian:before {
+	content: "\e60f";
+}
+
+.zhuanfa:before {
+	content: "\e610";
+}

@@ -1,0 +1,241 @@
+{
+	"pages": [
+
+		{
+			"path": "pages/AnimalIndex/AnimalIndex",
+			"style": {
+				"navigationBarTitleText": "保护动物名录"
+			}
+		},
+		{
+			"path": "pages/AnimalIndex/AnimalList",
+			"style": {
+				"navigationBarTitleText": "动物列表"
+			}
+		},
+		
+		{
+			"path": "pages/lg2/lg2",
+			"style": {
+				"navigationBarTitleText": "注册登录",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/AnimalEncyclopedia/AnimalEncyclopedia",
+			"style": {
+				"navigationBarTitleText": "动物百科",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/AnimalRegulations/AnimalRegulations",
+			"style": {
+				"navigationBarTitleText": "相关法规",
+				"enablePullDownRefresh": false
+			}
+		},
+		// {
+		// 		"path": "pages/index/index",
+		// 		"style": {
+		// 			"navigationBarTitleText": "uni-app"
+		// 		}
+		// 	},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "用户中心",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/crop",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/register",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/wiki",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/index/mqtt",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		
+		},
+
+		{
+			"path": "pages/AnimalIndex/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/AnimalIndex/searchResult",
+			"style": {
+				"navigationBarTitleText": "搜索结果",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/AnimalIdentification/AnimalIdentification",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/AnimalIdentification/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/Animaldetails/Animaldetails",
+			"style" : 
+			{
+				"navigationBarTitleText" : "动物详情",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/AnimalIdentification/aiAnimalResult",
+			"style" : 
+			{
+				"navigationBarTitleText" : "匹配详情结果",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/AnimalIdentification/baidu",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/AnimalIndex/text",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		}
+
+	],
+
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/AnimalIndex/AnimalIndex",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-active.png",
+				"text": "保护动物名录"
+			}, {
+				"pagePath": "pages/AnimalEncyclopedia/AnimalEncyclopedia",
+				"iconPath": "static/tabbar/wiki.png",
+				"selectedIconPath": "static/tabbar/wiki-active.png",
+				"text": "动物百科"
+			},
+			{
+				"pagePath": "pages/AnimalIdentification/AnimalIdentification",
+				"iconPath": "static/tabbar/wiki.png",
+				"selectedIconPath": "static/tabbar/wiki-active.png",
+				"text": "AI识别"
+			}, {
+				"pagePath": "pages/AnimalRegulations/AnimalRegulations",
+				"iconPath": "static/tabbar/my.png",
+				"selectedIconPath": "static/tabbar/my-active.png",
+				"text": "相关法规"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#1296db",
+		"backgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "white",
+		"app-plus": {
+			"background": "#efeff4"
+		},
+		"usingComponents": {
+			//vant组件
+			"van-button": "/wxcomponents/@vant/weapp/button/index",
+			"van-action-sheet": "/wxcomponents/@vant/weapp/action-sheet/index",
+			"van-area": "/wxcomponents/@vant/weapp/area/index",
+			"van-button": "/wxcomponents/@vant/weapp/button/index",
+			"van-card": "/wxcomponents/@vant/weapp/card/index",
+			"van-cell": "/wxcomponents/@vant/weapp/cell/index",
+			"van-cell-group": "/wxcomponents/@vant/weapp/cell-group/index",
+			"van-checkbox": "/wxcomponents/@vant/weapp/checkbox/index",
+			"van-checkbox-group": "/wxcomponents/@vant/weapp/checkbox-group/index",
+			"van-col": "/wxcomponents/@vant/weapp/col/index",
+			"van-dialog": "/wxcomponents/@vant/weapp/dialog/index",
+			"van-field": "/wxcomponents/@vant/weapp/field/index",
+			"van-goods-action": "/wxcomponents/@vant/weapp/goods-action/index",
+			"van-goods-action-icon": "/wxcomponents/@vant/weapp/goods-action-icon/index",
+			"van-goods-action-button": "/wxcomponents/@vant/weapp/goods-action-button/index",
+			"van-icon": "/wxcomponents/@vant/weapp/icon/index",
+			"van-loading": "/wxcomponents/@vant/weapp/loading/index",
+			"van-nav-bar": "/wxcomponents/@vant/weapp/nav-bar/index",
+			"van-notice-bar": "/wxcomponents/@vant/weapp/notice-bar/index",
+			"van-notify": "/wxcomponents/@vant/weapp/notify/index",
+			"van-panel": "/wxcomponents/@vant/weapp/panel/index",
+			"van-progress": "/wxcomponents/@vant/weapp/progress/index",
+			"van-radio": "/wxcomponents/@vant/weapp/radio/index",
+			"van-radio-group": "/wxcomponents/@vant/weapp/radio-group/index",
+			"van-row": "/wxcomponents/@vant/weapp/row/index",
+			"van-search": "/wxcomponents/@vant/weapp/search/index",
+			"van-slider": "/wxcomponents/@vant/weapp/slider/index",
+			"van-stepper": "/wxcomponents/@vant/weapp/stepper/index",
+			"van-steps": "/wxcomponents/@vant/weapp/steps/index",
+			"van-submit-bar": "/wxcomponents/@vant/weapp/submit-bar/index",
+			"van-swipe-cell": "/wxcomponents/@vant/weapp/swipe-cell/index",
+			"van-switch": "/wxcomponents/@vant/weapp/switch/index",
+			"van-tab": "/wxcomponents/@vant/weapp/tab/index",
+			"van-tabs": "/wxcomponents/@vant/weapp/tabs/index",
+			"van-tabbar": "/wxcomponents/@vant/weapp/tabbar/index",
+			"van-tabbar-item": "/wxcomponents/@vant/weapp/tabbar-item/index",
+			"van-tag": "/wxcomponents/@vant/weapp/tag/index",
+			"van-toast": "/wxcomponents/@vant/weapp/toast/index",
+			"van-transition": "/wxcomponents/@vant/weapp/transition/index",
+			"van-tree-select": "/wxcomponents/@vant/weapp/tree-select/index",
+			"van-datetime-picker": "/wxcomponents/@vant/weapp/datetime-picker/index",
+			"van-rate": "/wxcomponents/@vant/weapp/rate/index",
+			"van-collapse": "/wxcomponents/@vant/weapp/collapse/index",
+			"van-collapse-item": "/wxcomponents/@vant/weapp/collapse-item/index",
+			"van-empty": "/wxcomponents/@vant/weapp/empty/index",
+			"van-popup": "/wxcomponents/@vant/weapp/popup/index",
+			"van-picker": "/wxcomponents/@vant/weapp/picker/index"
+		}
+	}
+}
