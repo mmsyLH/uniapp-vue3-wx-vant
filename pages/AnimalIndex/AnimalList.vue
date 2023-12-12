@@ -22,8 +22,8 @@
 
 			<!-- 右侧菜单 -->
 			<scroll-view class="scroll3" scroll-y="true">
-				<view class="top-item" v-for="(item,index) in dwZhongList" :key="index">
-					<image :src="item.dwtp" width="100px" height="100px" @click="todetail(item)">
+				<view class="top-item" v-for="(item,index) in dwZhongList" :key="index" >
+					<image :src="item.dwtp" width="100px" height="100px" @click="todetail(item)" v-if="item.dwtp!='没有图片'">
 					</image>
 					{{item.dw}}
 				</view>
@@ -92,9 +92,10 @@
 						this.dwMuList.push(item);
 					})
 				}).catch(err => {
-					console.error("获取母失败", err);
+					console.error("获取目失败", err);
 				})
 			},
+			//获得动物科
 			async getKe(dw) {
 				// xx4/${dw}
 				await http(`xx4/${dw}`, {}, {
@@ -109,6 +110,7 @@
 					console.error(err);
 				})
 			},
+			//获取动物种
 			async getZhong(dw) {
 				//xx/${dw}
 				await http(`xx/${dw}`, {}, {
@@ -123,6 +125,7 @@
 					console.error(err);
 				})
 			},
+			//跳转详情页
 			todetail(item) {
 				var id = item.id
 				console.log(id);

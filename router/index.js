@@ -1,7 +1,6 @@
 //白名单
 const whiteList = [
 	'/',
-	'/pages/index/index',
 	'/pages/AnimalEncyclopedia/AnimalEncyclopedia',
 	'/pages/Animaldetails/Animaldetails',
 	'/pages/AnimalIdentification/aiAnimalResult',
@@ -11,16 +10,6 @@ const whiteList = [
 	'/pages/AnimalIndex/search',
 	'/pages/AnimalIndex/searchResult',
 	'/pages/AnimalRegulations/AnimalRegulations',
-	'/pages/my/my',
-	'/pages/GameList/GameList',
-	'/pages/index/login',
-	'/pages/index/mqtt',
-	'/pages/index/login-res',
-	'/pages/lg2/lg2',
-	'/pages/index/lg2',
-	'/pages/index/register',
-	'/pages/index/wiki',
-	'/pages/index/crop',
 ]
 
 function hasPermission(url) {

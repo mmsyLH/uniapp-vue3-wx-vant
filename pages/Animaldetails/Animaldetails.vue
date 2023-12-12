@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{backgroundImage: 'url(' + animal.dwtp + ')'}">
 		<view class="detai_box">
 			<p>{{animal.dw}}{{animal.dwxm}}</p>
 			<p v-if="animal.dwjb">国家{{animal.dwjb}}保护动物</p>
@@ -16,11 +16,13 @@
 	export default {
 		data() {
 			return {
+
 				animal: '',
 			}
 		},
 		onLoad(query) {
 			console.log(query.id)
+			// var id = '981';   //这个数据有问题
 			//根据id查询动物详情
 			this.getAnimalDetailsById(query.id);
 		},
@@ -29,12 +31,10 @@
 			// 获取动物信息
 			getAnimalDetailsById(id) {
 				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/dwid/' + id,
+					url: `http://110.41.178.59:8081/ysdw/dwid/${id}`,
 					success: (res) => {
-						console.log(res.data)
-						if (res.data.code === 200) {
-							this.animal = res.data.message;
-						}
+						console.log(res);
+						this.animal = res.data.message;
 						console.log(JSON.stringify(this.animal))
 					},
 					fail: (err) => {
@@ -51,7 +51,6 @@
 	.container {
 		display: flex;
 		width: 100%;
-		background-image: url('{{animal.dwtp}}');
 		background-size: 100% 250px;
 		background-repeat: no-repeat;
 	}
