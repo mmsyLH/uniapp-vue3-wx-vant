@@ -14,9 +14,7 @@
 					<uni-icons v-if="isDelShow" type="close" size="20" color="#a7a7a7" style="padding-right: 20rpx;"
 						@click="clear"></uni-icons>
 					<view class="scan_weizhi">
-						<view class="scan_btn" @tap="search">搜索</view>
-						<!-- <view class="scan_btn" @tap="doSearch(false)">搜索2</view> -->
-						<!-- <van-button plain round hairline type="info" style="width: 140px;" @tap="doSearch(false)">搜索</van-button> -->
+						<van-button round  plain hairline type="info"  size="mini" @tap="search">搜索</van-button>
 					</view>
 				</view>
 			</view>
@@ -25,7 +23,7 @@
 		<view class="record">
 			<view class="record_heand">
 				<text>搜索历史</text>
-				<image src="../../static/c1.png" @click="delete_key"></image><!-- 点击历史记录直接执行搜索 -->
+				<uni-icons type="close" size="30" @click="delete_key" style="margin-right: 50px;"></uni-icons>
 			</view>
 			<!-- 搜索历史内容 -->
 			<scroll-view v-show="!isShowKeywordList" class="keyword-box" scrollY>
@@ -45,8 +43,8 @@
 			<view class="record_heand">
 				<text>热门搜索</text>
 				<image :class="'iconfont' + ' icon-yanjing' + forbid" @tap="hotToggle"></image>
-				<image src="../../static/c2.png" @tap="hotToggle"></image>
-				<image src="../../static/c3.png" @tap="changeBatch"></image>
+				<uni-icons type="eye" size="30" @tap="hotToggle" style="margin-right: 50px;"></uni-icons>
+				<!-- <uni-icons type="contact" size="30" @tap="changeBatch"></uni-icons> -->
 			</view>
 			<!-- 搜索热门内容 -->
 			<scroll-view v-show="!isShowKeywordList" class="keyword-box" scrollY>

@@ -2,7 +2,8 @@
 	<view>
 		<!-- <button @tap="checkCameraPermission">获取相机权限</button> -->
 		<button @tap="getImages">获取图片相册/拍照</button>
-
+		<navigator url="/pages/AnimalIdentification/index">点击跳转到结果页预览</navigator>
+		<navigator url="/pages/AnimalIndex/text">点击跳转到测试页2预览</navigator>
 		<view class="preview-tips">预览</view>
 		<button @tap="animalShiBieThis()" v-if="tpurl!=''">确认上传</button>
 		<image v-if="src" mode="widthFix" :src="src"></image>

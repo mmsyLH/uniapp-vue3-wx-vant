@@ -13,7 +13,7 @@
 				"navigationBarTitleText": "动物列表"
 			}
 		},
-		
+
 		{
 			"path": "pages/lg2/lg2",
 			"style": {
@@ -83,7 +83,7 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		
+
 		},
 
 		{
@@ -115,35 +115,31 @@
 			}
 		},
 		{
-			"path" : "pages/Animaldetails/Animaldetails",
-			"style" : 
-			{
-				"navigationBarTitleText" : "动物详情",
-				"enablePullDownRefresh" : false
+			"path": "pages/Animaldetails/Animaldetails",
+			"style": {
+				"navigationBarTitleText": "动物详情",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/AnimalIdentification/aiAnimalResult",
-			"style" : 
-			{
-				"navigationBarTitleText" : "匹配详情结果",
-				"enablePullDownRefresh" : false
+			"path": "pages/AnimalIdentification/aiAnimalResult",
+			"style": {
+				"navigationBarTitleText": "匹配详情结果",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/AnimalIdentification/baidu",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
+			"path": "pages/AnimalIdentification/baidu",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/AnimalIndex/text",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
+			"path": "pages/AnimalIndex/text",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 		}
 
@@ -155,28 +151,21 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "pages/AnimalIndex/AnimalIndex",
-				"iconPath": "static/tabbar/home.png",
-				"selectedIconPath": "static/tabbar/home-active.png",
-				"text": "保护动物名录"
-			}, {
-				"pagePath": "pages/AnimalEncyclopedia/AnimalEncyclopedia",
-				"iconPath": "static/tabbar/wiki.png",
-				"selectedIconPath": "static/tabbar/wiki-active.png",
-				"text": "动物百科"
-			},
-			{
-				"pagePath": "pages/AnimalIdentification/AnimalIdentification",
-				"iconPath": "static/tabbar/wiki.png",
-				"selectedIconPath": "static/tabbar/wiki-active.png",
-				"text": "AI识别"
-			}, {
-				"pagePath": "pages/AnimalRegulations/AnimalRegulations",
-				"iconPath": "static/tabbar/my.png",
-				"selectedIconPath": "static/tabbar/my-active.png",
-				"text": "相关法规"
-			}
-		]
+			"pagePath": "pages/AnimalIndex/AnimalIndex",
+			"iconPath": "static/tabbar/home.png",
+			"selectedIconPath": "static/tabbar/home-active.png",
+			"text": "保护动物名录"
+		}, {
+			"pagePath": "pages/AnimalEncyclopedia/AnimalEncyclopedia",
+			"iconPath": "static/tabbar/wiki.png",
+			"selectedIconPath": "static/tabbar/wiki-active.png",
+			"text": "动物百科"
+		}, {
+			"pagePath": "pages/AnimalRegulations/AnimalRegulations",
+			"iconPath": "static/tabbar/my.png",
+			"selectedIconPath": "static/tabbar/my-active.png",
+			"text": "相关法规"
+		}]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

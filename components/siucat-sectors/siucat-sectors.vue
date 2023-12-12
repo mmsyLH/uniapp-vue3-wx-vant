@@ -2,22 +2,22 @@
 	<!-- 转盘触摸事件 -->
 	<view class="turntable" @touchstart='Start' @touchmove='Move' @touchend='Chend' v-if="datalist.length>0">
 		<view class="turntable-content"
-			:style='{height:`${40* datalist.length}rpx`,transform: `rotateZ(${turnZ}deg)`,transition}'>
+			:style='{transform: `rotateZ(${turnZ}deg)`,transition}'>
 			<!-- 循环生成转盘元素 -->
 			<view class="turntable-item" v-for="(item,index) in datalist" :style="{
 					zIndex:`${subIndex(index)}`,
-					transform:`rotate(${index*10}deg) translate3d(-50%, 0px, 0px)`
+					transform:`rotate(${index*TRANS}deg) translateX(-50%)`
 				}" :key='index'>
 				<view class="ar-floor__sku-item" :style="{
 						transform: `scale(${subScale(index)})`,transition: `transform 0.2s ease-out 0s`}">
 					<view class="taro-img">
 						<!-- 商品图片 -->
-						<image class="taro-img__mode-widthfix" :src="item.baike_info.image_url" mode="aspectFill">
+						<image class="taro-img__mode-widthfix" :src="getDataFiled(index, 'baike_info.image_url')" mode="aspectFill">
 						</image>
 					</view>
 					<view class="jo-price">
 						<!-- 显示商品详情 -->
-						<text class="taro-text jo-price__yen">{{item.name + " = " +index}}</text>
+						<text class="taro-text jo-price__yen">{{getDataFiled(index, 'name')}}</text>
 					</view>
 				</view>
 			</view>
@@ -34,6 +34,7 @@
 				datalist: [],
 				zList: [45, 46, 47, 48, 49, 51, 49, 48, 47, 46, 45],
 				zIndex: 6,
+				TRANS:30,
 
 				// 触摸事件变量
 				moveClientX: 0, // 初始触摸位置
@@ -44,7 +45,6 @@
 				turnZ: 0, // 旋转角度
 				transition: '', // 过渡效果
 				scale: 0.0618, // 缩放比例
-
 				taroimg: 0, // 商品图片的索引
 			}
 		},
@@ -68,35 +68,16 @@
 			},
 			// 计算商品的缩放比例
 			subScale() {
-				return (index) => {
-					let {
-						datalist,
-						zIndex,
-						zList,
-						scale
-					} = this;
-					// 根据索引和数据长度计算缩放比例
-					if (index > (datalist.length - zIndex) && (index - (datalist.length - zIndex + 1)) % zIndex <=
-						11) {
-						if ((50 - zList[(index - (datalist.length - zIndex + 1)) % zIndex]) >= 0) {
-							return 1 - (50 - zList[(index - (datalist.length - zIndex + 1)) % zIndex]) * scale;
-						} else {
-							return 1;
-						}
-					} else {
-						if ((50 - zList[index + zIndex - 1]) >= 0) {
-							return 1 - (50 - zList[index + zIndex - 1]) * scale;
-						} else {
-							return 1;
-						}
-					}
-				}
+				return () => 1.6;
 			}
 		},
 		methods: {
 			// 插入数据到datalist
 			add(data) {
-				this.datalist = this.Limit(data);
+				this.datalist = data;
+			},
+			getDataFiled(index, filedLink) {
+				return filedLink.split('.').reduce((e, filed) => e && (e[filed] || e), this.datalist[index]);
 			},
 			// 触摸事件处理
 			Start(e) {
@@ -108,24 +89,14 @@
 				this.moveClientX = e.changedTouches[0].pageX;
 				this.differenceClientX = this.moveClientX - this.startClientX;
 
-				let trZ = Math.abs(this.differenceClientX) * .1;
+				let trZ = Math.abs(this.differenceClientX) * .3;
 				// 根据触摸移动更新旋转角度
-				if (this.differenceClientX > 0) {
-					this.turnZ += trZ;
-				} else {
-					this.turnZ -= trZ;
-				}
-				let integer = ~~(this.turnZ.toFixed());
-				let sumTage = Math.abs(integer % 10);
-				// 根据旋转角度调整
-				if (sumTage < 5) {
-					integer = integer > 0 ? integer - sumTage : integer + sumTage;
-				} else {
-					integer = integer > 0 ? integer + (10 - sumTage) : integer - (10 - sumTage);
-				}
-				this.integer = integer;
-				let index = 6;
-				index = index + integer / 10;
+				this.turnZ += trZ * (this.differenceClientX > 0 ? 1 : -1);
+				
+				let integer = ~~(this.turnZ) / this.TRANS;
+				// 取整
+				this.integer = Math.round(integer);
+				let index = 6 + integer / 10;
 				if (integer > 0) {
 					this.zIndex = index % 36;
 				} else {
@@ -156,27 +127,11 @@
 			},
 			Chend() {
 				this.transition = `transform 0.2s ease-out 0s`;
-				this.turnZ = this.integer;
-				this.taroimg = Math.abs(this.integer) / 10 % 36;
-				if (this.integer > 0) {
-					this.taroimg = 36 - this.taroimg;
-				}
+				this.turnZ = this.integer * this.TRANS;
+				this.taroimg = Math.abs(this.integer)  % this.datalist.length;
+				if (this.integer > 0) this.taroimg = this.datalist.length - this.taroimg;
 				this.$emit('Chend', this.taroimg);
-			},
-			Limit(arr) {
-				let leng = arr.length;
-				if (leng == 36) return arr;
-				let num = Math.abs(36 - leng);
-				if (leng < 36) {
-					for (let i = 0; i < num; i++) {
-						let random = ~~(Math.random() * arr.length);
-						arr.push(arr[random]);
-					}
-					return arr;
-				} else {
-					return arr.splice(0, 36);
-				}
-			},
+			}
 		}
 	}
 </script>
@@ -185,7 +140,7 @@
 	.turntable {
 		-webkit-touch-callout: none;
 		user-select: none;
-		padding-top: 30rpx;
+		padding-top: 100rpx;
 		position: relative;
 		width: 100%;
 		overflow: hidden;

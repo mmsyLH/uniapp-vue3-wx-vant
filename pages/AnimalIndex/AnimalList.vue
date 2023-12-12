@@ -125,12 +125,9 @@
 			},
 			todetail(item) {
 				var id = item.id
-				console.log(id)
-				this.$router.push({
-					path: '/detail',
-					params: {
-						id: id
-					}
+				console.log(id);
+				uni.navigateTo({ //携带参数 传递
+					url: `/pages/Animaldetails/Animaldetails?id=${id}`,
 				});
 			}
 
