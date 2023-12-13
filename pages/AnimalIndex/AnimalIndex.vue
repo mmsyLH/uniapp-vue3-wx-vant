@@ -1,67 +1,66 @@
 <template>
-	<!-- 搜索框 -->
-	<view>
-		<view style="background-color: white;" class="van-search">
-			<view @click="goSearch" style="width: 83%;">
-				<van-search disabled="true" value="搜索名录" shape="round">
-				</van-search>
+	<view class="container">
+		<!-- 搜索框 -->
+
+		<view class="search-bar">
+			<view class="search-input" @tap="goSearch">
+				<u-search :show-action="false" placeholder="搜索名录"></u-search>
 			</view>
-			<view style="width: 17%;" class="ai" @tap="getImages">
-				<uni-icons type="camera" size="30"></uni-icons>
-			</view>
+
+			<u-icon name="camera" size="30" @tap="getImages"></u-icon>
 		</view>
 
-	</view>
-
-	<!-- 标签栏 -->
-	<view>
-		<van-tabs swipeable :ellipsis="false" title-active-color="#1296DB" @click="onClickAnimailMen">
-			<van-tab v-for="(animal, index) in animalsMen" :title="animal.dw" :key="index"></van-tab>
-		</van-tabs>
-	</view>
-	<view style="text-align: center; margin-top: 3%;">
-		<image v-if="animalsGang[currentIndex] && animalsGang[currentIndex].dwtp" class="bg-set"
-			:src="animalsGang[currentIndex].dwtp"></image>
-		<!-- 
-		 :current="currentIndex"当前展示的动物索引 
-		 :interval="3000"      自动切换时间间隔 
-		 :duration="1000"      切换动画时长
-		 :circular="true"		是否采用衔接滑动
-		 :previousMargin="previous_next"    :nextMargin="previous_next"         指示器与边框的距离
-		 -->
-		<swiper :current="currentIndex" class="swiper" :duration="1000" :circular="true" :previousMargin="previous_next"
-			:nextMargin="previous_next" @change="swiperTab">
-			<swiper-item v-for="(animal, index) in animalsGang" :key="index">
-				<view>{{ animal.dw}}</view>
-				<view class="swiper-item">
-					<!-- 条件渲染 -->
-					<view v-if="animal.dwtp">
-						<view :class="currentIndex === index ? 'current-item' : ''" class="image-container">
-							<image :src="animal.dwtp" class="swiper-itemImage"
-								:class="currentIndex === index ? 'swiperItemActive' : ''"
-								@tap="goToSearchPage(currentIndex)" style="border: 1rpx solid rgba(18,150,219, 0.2);">
-							</image>
-						</view>
-						<view class="animal-info">
-							<view class="animal-details">
-								<!-- 这里将来可能展示动物个人信息 -->
-								<!-- 							<view>{{ animal.name }}</view>
-													<view>{{ animal.protectionLevel }}</view> -->
+		<!-- 标签栏 -->
+		<view class="meng-bar">
+			<u-tabs :list="tabList" @click="onClickAnimailMen" lineColor="#1296db" :activeStyle="{
+				    color: '#1296db',
+				    fontWeight: 'bold',
+				    transform: 'scale(1.05)'
+				}" lineWidth="100">
+			</u-tabs>
+		</view>
+		<u-line></u-line>
+		<view class="swiper-container">
+			<!-- <view class="bg-set"></view> -->
+			<!--             
+			 :current="currentIndex"当前展示的动物索引 
+			 :interval="3000"      自动切换时间间隔 
+			 :duration="1000"      切换动画时长
+			 :circular="true"		是否采用衔接滑动
+			 :previousMargin="previous_next"    :nextMargin="previous_next"         指示器与边框的距离
+			 -->
+			<swiper :current="currentIndex" class="swiper" :duration="1000" :circular="true"
+				:previousMargin="previous_next" :nextMargin="previous_next" @change="swiperTab">
+				<swiper-item v-for="(animal, index) in animalsGang" :key="index">
+					<view class="animal-text">{{ animal.dw }}</view>
+					<view class="swiper-item">
+						<!-- 条件渲染 -->
+						<view v-if="animal.dwtp">
+							<view @tap="goToSearchPage(index)" :class="currentIndex === index ? 'current-item' : ''"
+								class="image-container">
+								<image :src="animal.dwtp" class="swiper-itemImage shadow bg-white"
+									:class="currentIndex === index ? 'swiperItemActive' : ''"
+									:mode="currentIndex === index ? 'aspectFill' : ''">
+								</image>
+							</view>
+							<view class="animal-info">
+								<view class="animal-details">
+									<!-- 这里将来可能展示动物个人信息 -->
+									<!-- <view>{{ animal.name }}</view>
+										 <view>{{ animal.protectionLevel }}</view> -->
+								</view>
 							</view>
 						</view>
-					</view>
-					<!-- 没图片显示的情况 -->
-					<view v-else>
-						<van-empty description="暂无图片"></van-empty>
-					</view>
+						<!-- 没图片显示的情况 -->
+						<view v-else>
+							<van-empty description="暂无图片"></van-empty>
+						</view>
 
-				</view>
-
-			</swiper-item>
-		</swiper>
+					</view>
+				</swiper-item>
+			</swiper>
+		</view>
 	</view>
-
-
 </template>
 
 <script>
@@ -80,14 +79,15 @@
 				src: '', // 存储拍照后的临时图片路径
 				tpurl: "", //ai识别上传的在线图片路径
 				qntoken: '',
+				tabList: []
 			};
 		},
 
 
 		onLoad() {
-
 			//获取标签导航栏的动物门
 			this.getAnimalMen();
+
 			//获取轮播图的动物纲
 			this.getAnimalGang(this.animalsGangName);
 		},
@@ -112,6 +112,11 @@
 							// 过滤掉dwtp为空或者值为"没有图片"的项
 							this.animalsMen = res.data.message.filter(item => item.dwtp && item.dwtp !==
 								"没有图片");
+							this.animalsMen.forEach(item => {
+								this.tabList.push({
+									name: item.dw
+								});
+							})
 						}
 					},
 					fail: (err) => {
@@ -130,36 +135,36 @@
 							res.data.message.forEach(item => {
 								if (item.dwtp != "没有图片") {
 									this.animalsGang.push(item)
-								} else {
-									console.log(item.dwtp)
 								}
 							});
 							// this.animalsGang = res.data.message.filter(item => item.dwtp && item.dwtp !=="没有图片");
 						}
 					},
 					fail: (err) => {
-						console.log(err);
+						console.error(err);
 					}
 				});
 			},
 			// 点击图片方法
 			goToSearchPage(index) {
+				//console.log(index);
 				// 根据索引获取对应的门信息
 				const gang = this.animalsGang[index].dw;
 				console.log("传过来 的index", gang);
-				uni.navigateTo({ //携带参数 传递
-					url: `/pages/AnimalIndex/AnimalList?name=${gang}`,
-				});
-
+				if (this.currentIndex === index) {
+					uni.navigateTo({ //携带参数 传递
+						url: `/pages/AnimalIndex/AnimalList?name=${gang}`,
+					});
+				}
 			},
 			//轮播图
 			swiperTab(e) {
 				this.currentIndex = e.detail.current;
 			},
 			//动物门的点击事件
-			onClickAnimailMen(event) {
+			onClickAnimailMen(item) {
 				//选择动物门传递去查询动物纲
-				this.getAnimalGang(event.detail.title);
+				this.getAnimalGang(item.name);
 			},
 			//选择图片上传
 			getImages() {
@@ -221,7 +226,7 @@
 
 					},
 					fail(err) {
-						console.log("获取七牛云token失败", err)
+						console.error("获取七牛云token失败", err)
 					}
 				})
 			},
@@ -244,7 +249,7 @@
 						this.animalShiBie(this.tpurl);
 					},
 					fail(err) {
-						console.log("上传七牛云失败", err)
+						console.error("上传七牛云失败", err)
 					}
 				})
 			},
@@ -310,27 +315,41 @@
 		align-items: center;
 	}
 
-	.van-search {
+	.search-bar {
 		display: flex;
+		justify-content: space-between;
+	}
 
+	.search-input {
+		display: flex;
+		align-items: center;
+		width: 85%;
+		margin-right: 16px;
+	}
+
+	.search-bar,
+	.meng-bar {
+		height: 50px;
+	}
+
+
+
+	.swiper-container {
+		display: flex;
+		align-items: center;
+		height: 80vh;
 	}
 
 	.swiper {
 		width: 100%;
 		height: 904rpx;
 		position: absolute;
-	}
-
-	.swiper-item {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		/* left: 0; */
 	}
 
 	/* 设置当前图片高度 */
 	.current-item .swiper-itemImage {
-		width: 606rpx;
+		/* width: 606rpx; */
 		height: 836rpx;
 		border-radius: 24rpx;
 	}
@@ -401,7 +420,15 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		z-index: -1;
+		z-index: 0;
+		/* backdrop-filter: blur(10px); */
 		filter: blur(20rpx);
+		background-color: rgba(18, 150, 219, 0.5);
+	}
+
+	.animal-text {
+		font-weight: bold;
+		text-align: center;
+		margin-bottom: 8px;
 	}
 </style>
