@@ -1,23 +1,23 @@
 <template>
-  <view class="content">
-    <view class="t-goods-list" v-if="animalList && animalList.length > 0">
-      <view class="t-goods-item" v-for="(animal, index) in animalList" :key="index" @click="clickAnimal(animal)">
-        <image class="t-goods-img" :src="animal.dwtp"></image>
-        <view class="t-goods-name"><text>{{ animal.dw }}</text></view>
-        <view class="t-goods-desc"><text>{{ animal.dwjj }}</text></view>
-      </view>
-    </view>
-    <view class="t-empty" v-else-if="isInit">
-      <image src="/static/goods.png"></image>
-      <view class="t-empty-desc">没有动物哦~</view>
-    </view>
-    <view class="t-loading-more" v-if="isLoading || isNoMore && animalList && animalList.length > 0">
-      <image src="../../static/loading.png" v-if="isLoading"></image>
-      <view class="t-loading-desc" v-if="isLoading || isNoMore">
-        {{ isLoading ? '加载中...' : (isNoMore ? '没有更多数据了' : '') }}
-      </view>
-    </view>
-  </view>
+	<view class="container">
+		<view class="t-goods-list" v-if="animalList && animalList.length > 0">
+			<view class="t-goods-item shadow bg-white" v-for="(animal, index) in animalList" :key="index" @click="clickAnimal(animal)">
+				<image class="t-goods-img" mode="aspectFill" :src="animal.dwtp"></image>
+				<view class="t-goods-name"><text>{{ animal.dw }}</text></view>
+				<view class="t-goods-desc"><text>{{ animal.dwjj }}</text></view>
+			</view>
+		</view>
+		<view class="t-empty" v-else-if="isInit">
+			<image src="/static/goods.png"></image>
+			<view class="t-empty-desc">没有动物哦~</view>
+		</view>
+		<view class="t-loading-more" v-if="isLoading || isNoMore && animalList && animalList.length > 0">
+			<image src="../../static/loading.png"  v-if="isLoading"></image>
+			<view class="t-loading-desc" v-if="isLoading || isNoMore">
+				{{ isLoading ? '加载中...' : (isNoMore ? '没有更多数据了' : '') }}
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -48,20 +48,20 @@
 		//页面滑动到底部监听
 		onReachBottom() {
 			//后端接口数据有限，直接显示没有更多数据了
-			this.isNoMore=true;
+			this.isNoMore = true;
 		},
 		methods: {
 			// 获取动物信息
 			animalFuzzyQuery(animalName) {
 				this.isLoading = true;
 				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/cx/' + animalName,
+					url: 'http://110.41.178.59:8081/ysdw/cx/' + '猫',
 					success: (res) => {
 						if (res.data.code === 200) {
 							// 过滤掉dwtp为空或者值为"没有图片"的项
 							const filteredAnimals = res.data.message.filter(item => item.dwtp && item.dwtp !==
 								"没有图片");
-								console.log("filteredAnimals",filteredAnimals)
+							console.log("filteredAnimals", filteredAnimals)
 							if (this.pageNo === 1) {
 								// 如果是第一页数据，则直接赋值
 								this.animalList = filteredAnimals;
@@ -94,7 +94,7 @@
 			clickAnimal(animal) {
 				console.log("当前点击的动物id是" + animal.id);
 				uni.navigateTo({
-					url:"/pages/Animaldetails/Animaldetails?id="+animal.id,
+					url: "/pages/Animaldetails/Animaldetails?id=" + animal.id,
 				})
 			}
 		}
@@ -102,72 +102,66 @@
 </script>
 
 <style lang="scss" scoped>
-	.content {
+	.t-goods-list {
+		// padding-top: 18rpx;
 		box-sizing: border-box;
-		min-width: 100vw;
-		min-height: 100vh;
-		background-color: #f2f3f5;
-		padding-bottom: 80rpx;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		// align-items: center;
+		flex-wrap: wrap;
+		padding-top: 8px;
 
-		.t-goods-list {
-			padding-top: 18rpx;
+		.t-goods-item {
 			box-sizing: border-box;
-			width: 690rpx;
-			margin: 0 auto;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: wrap;
+			width: 336rpx;
+			background-color: #ffffff;
+			border-radius: 20px;
+			overflow: hidden;
+			margin-bottom: 16px;
+			position: relative;
 
-			.t-goods-item {
-				box-sizing: border-box;
-				width: 336rpx;
-				height: 530rpx;
-				background-color: #ffffff;
-				border-radius: 20rpx;
-				overflow: hidden;
-				margin-bottom: 18rpx;
-				position: relative;
-
-				.t-goods-img {
-					width: 100%;
-					height: 340rpx;
-				}
-
-				.t-goods-name {
-					font-size: 28rpx;
-					color: #000000;
-					line-height: 30rpx;
-					-webkit-line-clamp: 2;
-					display: -webkit-box;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					-webkit-box-orient: vertical;
-					padding: 0rpx 18rpx;
-					box-sizing: border-box;
-					word-break: break-all;
-				}
-
-				.t-goods-desc {
-					font-size: 24rpx;
-					color: #9e9e9e;
-					line-height: 26rpx;
-					-webkit-line-clamp: 5;
-					display: -webkit-box;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					-webkit-box-orient: vertical;
-					padding: 0rpx 18rpx;
-					box-sizing: border-box;
-					margin-top: 16rpx;
-					word-break: break-all;
-				}
-
-
+			.t-goods-img {
+				height: 340rpx;
 			}
+
+			.t-goods-name {
+				height: 15px;
+				font-size: 28rpx;
+				color: #000000;
+				// line-height: 30rpx;
+				-webkit-line-clamp: 2;
+				display: -webkit-box;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				-webkit-box-orient: vertical;
+				padding: 0 12px;
+				box-sizing: border-box;
+				word-break: break-all;
+				font-weight: bold;
+			}
+
+			.t-goods-desc {
+				// height: 80px;
+				font-size: 28rpx;
+				color: #9e9e9e;
+				// line-height: 26rpx;
+				-webkit-line-clamp: 5;
+				display: -webkit-box;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				-webkit-box-orient: vertical;
+				padding: 2px 12px;
+				box-sizing: border-box;
+				margin-top: 16rpx;
+				word-break: break-all;
+			}
+
+
 		}
 	}
+
 
 	.t-empty {
 		width: 100%;

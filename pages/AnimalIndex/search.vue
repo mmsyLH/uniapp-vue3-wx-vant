@@ -1,29 +1,16 @@
 <template>
-	<view class="raw">
-		<view class="scan_top">
+	<view class="container">
+		<view class="search-bar">
 			<!-- 搜索框 -->
-			<view class="inputp">
-				<view class="inputs">
-					<uni-icons type="search" size="20" style="margin-left: 20rpx;"></uni-icons>
-					<input ref="searchinput" v-model="keyword" type="text" :placeholder="placeholder" class="scaninput"
-						maxlength="24" @input="inputChange" @search="doSearch(false)" @confirm="doSearch(false)" />
-					<!--
-                        输入框 :placeholder：未输入时显示内容，
-                        v-model：绑定字段，maxlength：设置输入长度，@input：输入框内容有变化时触发事件 @confirm：能让手机输入框的确认变成搜索
-                    -->
-					<uni-icons v-if="isDelShow" type="close" size="20" color="#a7a7a7" style="padding-right: 20rpx;"
-						@click="clear"></uni-icons>
-					<view class="scan_weizhi">
-						<van-button round  plain hairline type="info"  size="mini" @tap="search">搜索</van-button>
-					</view>
-				</view>
-			</view>
+			<u-search :placeholder="placeholder" v-model="keyword" @input="inputChange" @search="doSearch(keyword)" 
+			@custom="doSearch(keyword)" maxlength="24">
+			</u-search>
 		</view>
 		<!-- 搜索记录 -->
 		<view class="record">
 			<view class="record_heand">
-				<text>搜索历史</text>
-				<uni-icons type="close" size="30" @click="delete_key" style="margin-right: 50px;"></uni-icons>
+				<up-text text="搜索历史" bold="true" block="false" size="18"></up-text>
+				<u-icon name="close-circle" :size="30" @tap="delete_key"></u-icon>
 			</view>
 			<!-- 搜索历史内容 -->
 			<scroll-view v-show="!isShowKeywordList" class="keyword-box" scrollY>
@@ -41,16 +28,15 @@
 		<!-- 热门搜索 -->
 		<view class="record">
 			<view class="record_heand">
-				<text>热门搜索</text>
-				<image :class="'iconfont' + ' icon-yanjing' + forbid" @tap="hotToggle"></image>
-				<uni-icons type="eye" size="30" @tap="hotToggle" style="margin-right: 50px;"></uni-icons>
-				<!-- <uni-icons type="contact" size="30" @tap="changeBatch"></uni-icons> -->
+				<up-text text="热门搜索" bold="true" block="false" size="18"></up-text>
+				<u-icon v-if="forbid == ''" name="eye-off" :size="30" @tap="hotToggle"></u-icon>
+				<u-icon v-else name="eye" :size="30" @tap="hotToggle"></u-icon>
 			</view>
 			<!-- 搜索热门内容 -->
 			<scroll-view v-show="!isShowKeywordList" class="keyword-box" scrollY>
 				<view v-if="forbid == ''" class="keyword-block">
 					<view class="keyword">
-						<view v-for="(keyword, index) in displayedKeywords" :key="index" style="color: orangered;"
+						<view v-for="(keyword, index) in displayedKeywords" :key="index" style="color: #1296db;"
 							@tap="doSearch(keyword.dw)">
 							{{ keyword.dw}}
 						</view>
@@ -157,7 +143,7 @@
 						// console.log("返回的数据为res.data:", res.data);
 						if (res.data.code === 200) {
 							this.protectedAnimals = res.data.message;
-							console.log("当前的protectedAnimals", JSON.stringify(this.protectedAnimals));
+							//console.log("当前的protectedAnimals", JSON.stringify(this.protectedAnimals));
 
 							// 在这里进行相关操作
 							// 例如更新数据到this.animals
@@ -186,7 +172,7 @@
 			// 执行搜索
 			doSearch(keyword) {
 				console.log(keyword);
-				console.log("keyword类型",typeof keyword);
+				console.log("keyword类型", typeof keyword);
 				if (!keyword.trim() || typeof keyword !== 'string') {
 					console.log('不执行搜索');
 					uni.showToast({
@@ -294,164 +280,21 @@
 </script>
 
 <style lang="scss" scoped>
-	.scan_top {
-		margin-top: 80rpx;
-		margin-left: 30rpx;
+	.search-bar {
 		display: flex;
 		align-items: center;
-
-		.inputp {
-			width: 580rpx;
-			margin-left: 30rpx;
-			margin-top: -10rpx;
-
-			.inputs {
-				background: #F2F2F2;
-				border-radius: 20upx;
-				position: relative;
-				display: flex;
-				align-items: center;
-
-				.scaninput {
-					width: 500rpx;
-					height: 60rpx;
-					padding-left: 10rpx;
-					display: flex;
-					align-items: center;
-					//background-color: #007AFF;
-				}
-
-				.searchimg {
-					width: 1em;
-					height: 1em;
-					position: absolute;
-					//top: 25upx;
-					left: 20upx;
-				}
-
-				.scanimg {
-					width: 1em;
-					height: 1em;
-					position: absolute;
-					//top: 25upx;
-					right: 20upx;
-				}
-
-				.searchbtn {
-					position: absolute;
-					//right: 20upx;
-					//top: 15upx;
-					border-radius: 5upx;
-					//margin-right: -250rpx;
-					background-color: #007AFF;
-					color: #fff;
-					width: 4em;
-					line-height: 2em;
-					text-align: center;
-					font-size: 0.8em;
-
-				}
-
-				.scan_weizhi {
-					display: flex;
-					justify-content: flex-end;
-
-					.scan_btn {
-						width: 140rpx;
-						height: 65rpx;
-						color: #FFF;
-						background-color: #2a7cff;
-						border-radius: 40rpx;
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						justify-content: center;
-
-					}
-				}
-
-			}
-		}
-	}
-
-	.inputp {
-		width: 500rpx;
-		margin-top: 80rpx;
-		margin-left: 110rpx;
-
-		.inputs {
-			background: #F2F2F2;
-			border-radius: 20upx;
-			position: relative;
-			display: flex;
-			align-items: center;
-
-			.scaninput {
-				width: 370rpx;
-				height: 60rpx;
-				padding-left: 10rpx;
-				display: flex;
-				align-items: center;
-			}
-
-			.searchimg {
-				width: 1em;
-				height: 1em;
-				position: absolute;
-				top: 25upx;
-				left: 20upx;
-			}
-
-			.scanimg {
-				width: 1em;
-				height: 1em;
-				position: absolute;
-				top: 25upx;
-				right: 20upx;
-			}
-
-			.searchbtn {
-				position: absolute;
-				right: 20upx;
-				top: 15upx;
-				border-radius: 5upx;
-				//margin-right: -250rpx;
-				//background: #007AFF;
-				color: #fff;
-				width: 4em;
-				line-height: 2em;
-				text-align: center;
-				font-size: 0.8em;
-
-			}
-		}
+		margin-top: 8px;
 	}
 
 	.record {
-
+		height: auto;
+		
 		.record_heand {
-			margin-top: 30rpx;
+			height: 50px;
 			display: flex;
-
-			text {
-				width: 80%;
-				height: 50rpx;
-				//background-color: #007AFF;
-				margin-left: 50rpx;
-
-			}
-
-			image {
-				width: 10%;
-				height: 50rpx;
-				//background-color: #1AAD19;
-				margin-right: 50rpx;
-				display: flex;
-				justify-content: flex-end;
-				align-items: center;
-				margin-left: 70rpx;
-			}
-
+			justify-content: space-between;
+			align-items: center;
+			margin-top:16px;
 		}
 
 		.record_buttom {}
@@ -476,8 +319,7 @@
 	}
 
 	.keyword-box .keyword-block .keyword {
-		width: 94%;
-		padding: 3px 3%;
+		width: 100%;
 		display: flex;
 		flex-flow: wrap;
 		justify-content: flex-start;
