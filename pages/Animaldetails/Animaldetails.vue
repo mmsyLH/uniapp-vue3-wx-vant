@@ -1,9 +1,11 @@
 <template>
 	<view class="container" :style="{backgroundImage: 'url(' + animal.dwtp + ')'}">
 		<view class="detai_box">
-			<p>{{animal.dw}}{{animal.dwxm}}</p>
-			<p v-if="animal.dwjb">国家{{animal.dwjb}}保护动物</p>
-			<p>{{animal.dwtype}}</p>
+			<view class="ani-title">
+				<p>{{animal.dw}}{{animal.dwxm}}</p>
+				<p v-if="animal.dwjb">国家{{animal.dwjb}}保护动物</p>
+				<p>{{animal.dwtype}}</p>
+			</view>
 			<view class="box_context">
 				<text>{{animal.dwjj}}</text>
 			</view>
@@ -56,30 +58,34 @@
 	}
 
 	.detai_box {
-		width: 90%;
-		height: 420px;
-		margin-top: 200px;
-		margin-left: 10px;
+		width: 100%;
+		height: 750rpx;
+		/* margin-top: 200px; */
+		/* margin-left: 10px; */
 		background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.64) 45%);
 		backdrop-filter: blur(20px);
-		border-radius: 10%;
-		padding: 10px;
-		overflow: hidden;
+		border-radius: 20px;
+		padding: 16px;
+		box-sizing: border-box;
+		/* overflow: hidden; */
+		position: relative;
+		top: 20vh;
+	}
 
+	.ani-title{
+		padding: 0 12px;
 	}
 
 	.box_context {
-		margin-top: 10px;
-		margin-left: 5px;
-		width: 325px;
-		height: 305px;
+		height: 525rpx;
 		background-color: #F7F6FF;
-		border-radius: 10px;
-		border: 1px lightblue solid;
+		border-radius: 16px;
+		padding: 8px;
+		/* border: 1px lightblue solid; */
 		/* 设置超出隐藏 */
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		overflow: hidden;
+		/* overflow: hidden; */
 		-webkit-line-clamp: 14;
 	}
 
