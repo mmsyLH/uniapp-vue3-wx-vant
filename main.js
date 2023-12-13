@@ -1,12 +1,16 @@
 import { createSSRApp } from 'vue'
 import App from './App.vue'
 import pinia from './utils/pinia.js'
+import uviewPlus from 'uview-plus'
 import request from './http/request.js'
 import './router/index.js'
 
 
+
+
 export function createApp() {
   const app = createSSRApp(App)
+  app.use(uviewPlus)
   app.use(pinia)
   app.config.globalProperties.$request=request
   return {
@@ -14,3 +18,4 @@ export function createApp() {
   	pinia
   }
 }
+

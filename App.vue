@@ -15,6 +15,9 @@
 </script>
 	
 <style lang="scss">
+	@import 'uview-plus/theme.scss';
+	@import 'static/css/colorui/main.css';
+	@import 'static/css/index.css';
 	
 	/*每个页面公共css */
 	@import '@/uni_modules/uni-scss/index.scss';
