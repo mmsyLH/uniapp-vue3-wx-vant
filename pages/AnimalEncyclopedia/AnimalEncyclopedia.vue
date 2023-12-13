@@ -1,18 +1,17 @@
 <template>
-	<view class="index">
+	<view class="container">
 		<!-- https://gitee.com/flexming/dcloud_animals_list.git -->
 		<view class="index-title">
-			<text>热门推荐</text>
-			<image v-if="!isList" @click="isList=!isList" src="../../static/50.png" mode=""></image>
-			<image v-else @click="isList=!isList" src="../../static/51.png" mode=""></image>
-		</view>
-		<view class="" style="height: 88rpx;width: 100%;background-color: darkgoldenrod;">
+			<up-text text="热门推荐" bold="true" block="false" size="18"></up-text>
+			<u-icon v-if="!isList" name="list" :size="30" @tap="isList=!isList"></u-icon>
+			<u-icon v-else name="grid" :size="30" @tap="isList=!isList"></u-icon>
 		</view>
 		<view class="index-list">
 			<!-- 列表 -->
 			<view class="index-list" v-if="isList">
 				<block v-for="(item,i) in records" :key="i">
 					<list :item="item"></list>
+					<u-line color="#1296db"></u-line>
 				</block>
 			</view>
 			<!-- 网格 -->
@@ -57,7 +56,7 @@
 					url: 'http://110.41.178.59:8081/ysdw/all?pages=1&pagesize=10',
 					success: (res) => {
 						if (res.data.code === 200) {
-							this.records=res.data.message.records;
+							this.records = res.data.message.records;
 							// 这一句代码不能重写，不然有可能出bug!!!!!!!!!!!!!!!!!!!!
 							this.records.forEach(i => i.tags = [i.dwjb].concat(i.dwclass.split(' ')));
 							// this.records.forEach(i => i.tags = (i.dwjb ? [i.dwjb] : ["其他"]).concat(i.dwclass.split(' ')));
@@ -75,56 +74,40 @@
 </script>
 
 <style lang="scss" scoped>
-	.index {
+	.index-list {
 		width: 100%;
-		padding-bottom: 20rpx;
+	}
+
+	.index-grid {
+		width: 100%;
 		box-sizing: border-box;
+	}
 
-		.index-list {
-			width: 100%;
-		}
+	.index-title {
+		display: flex;
+		justify-content: space-between;
 
-		.index-grid {
-			width: 100%;
-			padding: 0 24rpx;
+		text {
+			position: relative;
+			font-size: 32rpx;
+			font-weight: 700;
+			padding-left: 20rpx;
 			box-sizing: border-box;
 		}
 
-		.index-title {
-			width: 100%;
-			height: 88rpx;
-			background-color: #fff;
-			position: fixed;
-			padding: 0 24rpx;
-			box-sizing: border-box;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			z-index: 100;
-
-			text {
-				position: relative;
-				font-size: 32rpx;
-				font-weight: 700;
-				padding-left: 20rpx;
-				box-sizing: border-box;
-			}
-
-			text::after {
-				content: '';
-				width: 8rpx;
-				height: 30rpx;
-				position: absolute;
-				left: 0;
-				top: 8rpx;
-				background-color: #333;
-			}
-
-			image {
-				width: 35rpx;
-				height: 35rpx;
-			}
+		text::after {
+			content: '';
+			width: 8rpx;
+			height: 30rpx;
+			position: absolute;
+			left: 0;
+			top: 8rpx;
+			background-color: #333;
 		}
 
+		image {
+			width: 35rpx;
+			height: 35rpx;
+		}
 	}
 </style>

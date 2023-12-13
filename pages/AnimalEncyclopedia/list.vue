@@ -41,11 +41,10 @@
 	.list-item {
 		width: 100%;
 		display: flex;
-		border: 1px solid #f1f1f1;
 		border-radius: 10rpx;
-		padding: 15rpx;
 		box-sizing: border-box;
-		margin-bottom: 20rpx;
+		margin: 16px 0;
+		// margin-bottom: 20rpx;
 
 		.list-comment {
 			width: 100%;
@@ -78,23 +77,25 @@
 
 		.list-tag {
 			width: 100%;
-			margin-top: 15rpx;
+			margin: 4px 0;
+			display: flex;
+			flex-wrap: wrap;
 
 			text {
 				font-size: 22rpx;
 				font-weight: 400;
 				border: 1px solid orangered;
 				color: orangered;
-				margin-right: 10rpx;
+				margin-right: 8px;
 				border-radius: 10rpx;
-				padding: 1rpx 5rpx;
+				padding: 2px;
+				margin-bottom: 6px;
 				box-sizing: border-box;
 			}
 		}
 
 		.list-item-img {
-			width: 90px;
-			height: 200rpx;
+			width: 110px;
 
 			image {
 				width: 100%;
@@ -104,11 +105,11 @@
 
 		.list-content {
 			flex: 1;
-			margin-left: 15rpx;
+			margin-left: 8px;
 
 			.list-name {
 				width: 100%;
-				font-weight: 500;
+				font-weight: bold;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
