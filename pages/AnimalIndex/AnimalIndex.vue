@@ -64,6 +64,7 @@
 </template>
 
 <script>
+	import { getRequest } from '@/http/index'
 	export default {
 		data() {
 			return {
@@ -105,24 +106,21 @@
 			},
 			//获取轮播图门的信息
 			getAnimalMen() {
-				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/xx1',
-					success: (res) => {
-						if (res.data.code === 200) {
-							// 过滤掉dwtp为空或者值为"没有图片"的项
-							this.animalsMen = res.data.message.filter(item => item.dwtp && item.dwtp !==
-								"没有图片");
-							this.animalsMen.forEach(item => {
-								this.tabList.push({
-									name: item.dw
-								});
-							})
-						}
-					},
-					fail: (err) => {
-						console.log(err);
+				getRequest('/ysdw/xx1').then(res => {
+					if (res.code === 200) {
+						// 过滤掉dwtp为空或者值为"没有图片"的项
+						this.animalsMen = res.message.filter(item => item.dwtp && item.dwtp !==
+							"没有图片");
+						this.animalsMen.forEach(item => {
+							this.tabList.push({
+								name: item.dw
+							});
+						})
 					}
+				}).catch(err => {
+					console.error(err);
 				});
+		
 			},
 			//获取轮播图的动物纲
 			getAnimalGang(animalsGangName) {
