@@ -15,7 +15,8 @@
 </script>
 	
 <style lang="scss">
-	@import 'uview-plus/theme.scss';
+	@import 'uview-plus/index.scss';
+	
 	@import 'static/css/colorui/main.css';
 	@import 'static/css/index.css';
 	
