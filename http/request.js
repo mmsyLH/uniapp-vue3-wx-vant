@@ -1,4 +1,4 @@
-import useUserStore from '@/store/user.js'
+// import useUserStore from '@/store/user.js'
 import config from './config.js';
 const request = (options) => {
 	const {
@@ -8,12 +8,12 @@ const request = (options) => {
 		timeout = config.timeOut,
 		header = {}
 	} = options
-	const userStore=useUserStore();
-	const token=userStore.token;
+	// const userStore=useUserStore();
+	// const token=userStore.token;
 	let contentType = 'application/json;charset=UTF-8'
-	if (token.length>0) {
-		header['token'] = token
-	}
+	// if (token.length>0) {
+	// 	header['token'] = token
+	// }
 	header['content-type'] = contentType
 	uni.showLoading({
 		title: '加载中',
@@ -26,16 +26,16 @@ const request = (options) => {
 			url: config.baseUrl + url,
 			data: data,
 			success: ({data}) => {
-				if (data.success) {
+				if (data.code == 200) {
 					uni.hideLoading()
 				     resolve(data)
 				} else {
 					uni.hideLoading()
-					uni.showToast({
-						title: data.msg,
-						duration: 2000,
-						icon: 'none',
-					})
+					// uni.showToast({
+					// 	title: data.msg,
+					// 	duration: 2000,
+					// 	icon: 'none',
+					// })
 					reject(data)
 
 				}
