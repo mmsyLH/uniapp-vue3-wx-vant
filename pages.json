@@ -27,7 +27,13 @@
 				"enablePullDownRefresh": false
 			}
 		},
-
+		{
+			"path": "pages/AnimalRegulations/AnimalRegulationDetail",
+			"style": {
+				"navigationBarTitleText": "相关法规",
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/AnimalIndex/search",
 			"style": {
@@ -66,13 +72,6 @@
 		},
 		{
 			"path": "pages/AnimalIdentification/baidu",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/AnimalIndex/可能使用的好看页面",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false

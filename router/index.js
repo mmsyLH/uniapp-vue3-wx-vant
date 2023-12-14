@@ -10,6 +10,7 @@ const whiteList = [
 	'/pages/AnimalIndex/search',
 	'/pages/AnimalIndex/searchResult',
 	'/pages/AnimalRegulations/AnimalRegulations',
+	'/pages/AnimalRegulations/AnimalRegulationDetail',
 ]
 
 function hasPermission(url) {
