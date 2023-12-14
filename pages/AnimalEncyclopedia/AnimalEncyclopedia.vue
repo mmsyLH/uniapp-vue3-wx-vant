@@ -2,7 +2,7 @@
 	<view class="container">
 		<!-- https://gitee.com/flexming/dcloud_animals_list.git -->
 		<view class="index-title">
-			<up-text text="热门推荐" bold="true" block="false" size="18"></up-text>
+			<text text="热门推荐" bold="true" block="false" size="18">热门推荐</text>
 			<u-icon v-if="!isList" name="list" :size="30" @tap="isList=!isList"></u-icon>
 			<u-icon v-else name="grid" :size="30" @tap="isList=!isList"></u-icon>
 		</view>
