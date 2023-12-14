@@ -1,4 +1,4 @@
-<template>
+<template class="container">
 	<view class="ar-floor view">
 		<div class="z-title">《《动物识别结果》》</div>
 		<view class="ar-floor__wrapper">
@@ -130,7 +130,6 @@
 		font-size: 22px;
 		padding-left: 145rpx;
 		padding-bottom: 26.496rpx;
-		padding-top: 50.7838rpx;
 	}
 
 	.ar-floor__wrapper {

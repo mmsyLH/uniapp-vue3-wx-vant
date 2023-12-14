@@ -112,7 +112,7 @@
 					if (res.code === 200) {
 						// 过滤掉dwtp为空或者值为"没有图片"的项
 						this.animalsMen = res.message.filter(item => item.dwtp && item.dwtp !==
-							"没有图片");
+							"");
 						this.animalsMen.forEach(item => {
 							this.tabList.push({
 								name: item.dw
@@ -129,7 +129,7 @@
 				getRequest(`/ysdw/xx2/${animalsGangName}`)
 					.then(res => {
 						if (res.code === 200) {
-							this.animalsGang = res.message.filter(item => item.dwtp !== "没有图片");
+							this.animalsGang = res.message.filter(item => item.dwtp !== "");
 						}
 					})
 					.catch(err => {
@@ -138,15 +138,11 @@
 			},
 			// 点击图片方法
 			goToSearchPage(index) {
-				//console.log(index);
-				// 根据索引获取对应的门信息
 				const gang = this.animalsGang[index].dw;
-				console.log("传过来 的index", gang);
-				if (this.currentIndex === index) {
-					uni.navigateTo({ //携带参数 传递
-						url: `/pages/AnimalIndex/AnimalList?name=${gang}`,
-					});
-				}
+				// console.log("传过来 的index", gang);
+				uni.navigateTo({ //携带参数 传递
+					url: `/pages/AnimalIndex/AnimalList?name=${gang}`,
+				});
 			},
 			//轮播图
 			swiperTab(e) {
@@ -155,7 +151,7 @@
 			//动物门的点击事件
 			onClickAnimailMen(item) {
 				//选择动物门传递去查询动物纲
-				this.animalsGang=[];
+				this.animalsGang = [];
 				this.getAnimalGang(item.name);
 			},
 			//选择图片上传
@@ -205,7 +201,11 @@
 			},
 			//获取七牛云token
 			getqntoken() {
+				uni.showLoading({
+					title: '加载中...',
+				});
 				console.log("正在获取七牛云token")
+				//因为图片上传和ai识别是一连串的 所以不使用封装好的请求工具  这样更好处理统一加载中的动画
 				uni.request({
 					url: 'http://110.41.178.59:8080/user/getqntoken',
 					method: "GET",
@@ -245,11 +245,6 @@
 					}
 				})
 			},
-			// AI动物识别
-			animalShiBieThis() {
-				console.log("this.tpurl", this.tpurl)
-				this.animalShiBie(this.tpurl);
-			},
 			// AI动物识别 方法重载
 			animalShiBie(tpurl) {
 				// 在上传成功后进行页面跳转到 aiAnimalResult.vue，并携带 tpurl 参数
@@ -257,6 +252,7 @@
 					url: '/pages/AnimalIdentification/aiAnimalResult?tpurl=' + tpurl,
 					success: () => {
 						console.log('跳转成功');
+						uni.hideLoading(); // 隐藏加载动画
 					},
 					fail: (err) => {
 						console.error('跳转失败', err);

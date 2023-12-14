@@ -1,5 +1,5 @@
 <template>
-	<view class="content1">
+	<view class="container content1">
 		<view class="kong">
 			<image class="img" src="../../static/zf.png" mode="aspectFit" @click="toDetail"></image>
 			<text class="txt">中华人民共和国野生动物保护法</text>
@@ -15,7 +15,7 @@
 
 		<view>
 			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="button"
-				activeColor="#ADD8E6"></uni-segmented-control>
+				activeColor="rgba(36,158,222,0.8)"></uni-segmented-control>
 			<view class="content">
 				<view v-show="current === 0" class="neirong1">
 					<text>中华人民共和国野生动物保护法</text>
@@ -31,10 +31,6 @@
 				</view>
 			</view>
 		</view>
-
-
-
-
 	</view>
 </template>
 
@@ -69,7 +65,8 @@
 		/* 从上到下排列 */
 		flex-direction: column;
 		padding: 0 16px;
-		background-color: #E0E0E0;
+		/* background-color: #E0E0E0; */
+		/* background-color: #E0E0E0; */
 		overflow: hidden;
 
 	}
@@ -82,7 +79,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: white;
+		background-color: #E0E0E0;
 		margin-bottom: 16px;
 	}
 

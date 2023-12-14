@@ -14,24 +14,38 @@
 		<view class="main_cate">
 			<!-- 左侧菜单 -->
 			<scroll-view class="scroll2" scroll-y="true">
-				<view class="top-item" v-for="(item,index) in dwKeList" :key="index">
-					<text @click="left_menuTab" :data-index="index"
-						:class="left_current == index ? 'Active2':''">{{item.dw}}</text>
-				</view>
+<!-- 				<template v-if="dwKeList.length==0">
+					<van-empty description="该目下暂无科数据"></van-empty>
+				</template> -->
+			    <!-- <template v-else> -->
+			        <view class="top-item" v-for="(item,index) in dwKeList" :key="index">
+			            <text @click="left_menuTab" :data-index="index" :class="left_current === index ? 'Active2':''">
+			                {{item.dw}}
+			            </text>
+			        </view>
+			    <!-- </template> -->
 			</scroll-view>
 
 			<!-- 右侧菜单 -->
 			<scroll-view class="scroll3" scroll-y="true">
+			  <template v-if="dwKeList.length === 0">
+			    <!-- 在 dwKeList 为空的情况下展示“该种暂无数据” -->
+			    <van-empty description="该种暂无数据"></van-empty>
+			  </template>
+			  <template v-else>
 			    <view class="top-item" v-for="(item, index) in dwZhongList" :key="index">
-			        <template v-if="item.dwtp && item.dwtp !== '没有图片'">
-			            <image :src="item.dwtp" width="100px" height="100px" @click="todetail(item)"></image>
-			            {{ item.dw }}
-			        </template>
+			      <template v-if="item && item.dw">
+			        <image v-if="item.dwtp && item.dwtp !== ''" :src="item.dwtp" width="100px" height="100px" @click="todetail(item)"></image>
+			        {{ item.dw }}
+			      </template>
 			    </view>
-				<template v-if="dwZhongList.length==0">
-				    <van-empty description="该科暂无数据"></van-empty>
-				</template>
+			    <template v-if="dwZhongList.length === 0">
+			      <!-- 在 dwZhongList 为空的情况下展示“该科暂无数据” -->
+			      <van-empty description="该科暂无数据"></van-empty>
+			    </template>
+			  </template>
 			</scroll-view>
+
 		</view>
 	</view>
 </template>
@@ -91,9 +105,9 @@
 					method: 'GET'
 				}).then(res => {
 					const ani = res;
-					ani.forEach(item => {
-						this.dwMuList.push(item);
-					})
+					this.dwMuList = [];
+					this.dwMuList = ani.filter(item => item.dwtp !== ''); // 过滤掉dwtp为空的项
+					console.log("this.dwMuList", this.dwMuList);
 				}).catch(err => {
 					console.error("获取目失败", err);
 				})
@@ -105,10 +119,13 @@
 					method: 'GET'
 				}).then(res => {
 					const ani = res;
-					this.dwKeList = []
-					ani.forEach(item => {
-						this.dwKeList.push(item);
-					})
+					this.dwKeList = [];
+					console.log("res", res.length);
+					if (res.length != 0) {
+						console.log("123")
+						this.dwKeList = ani.filter(item => item.dwtp !== ''); // 过滤掉dwtp为空的项
+					}
+					console.log("this.dwKeList", this.dwKeList)
 				}).catch(err => {
 					console.error(err);
 				})

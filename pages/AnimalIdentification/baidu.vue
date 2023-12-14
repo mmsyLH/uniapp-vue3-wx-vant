@@ -13,7 +13,6 @@
 		},
 		onLoad(options) {
 			this.url = decodeURIComponent(options.url);
-			console.log("要显示的百度百科页面：",this.url);
 		},
 		methods: {
 
