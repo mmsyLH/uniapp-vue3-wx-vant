@@ -129,10 +129,6 @@
 				this.protectedAnimals = [{
 						id: 41,
 						name: '大熊猫41',
-					},
-					{
-						id: 2,
-						name: '华南虎2',
 					}
 				];
 				//加载后台数据

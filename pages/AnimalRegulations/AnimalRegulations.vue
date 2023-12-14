@@ -1,7 +1,7 @@
 <template>
 	<view class="container content1">
-		<view class="kong">
-			<image class="img" src="../../static/zf.png" mode="aspectFit" @click="toDetail"></image>
+		<view class="kong" @click="toDetail">
+			<image class="img" src="../../static/zf.png" mode="aspectFit"></image>
 			<text class="txt">中华人民共和国野生动物保护法</text>
 		</view>
 		<view class="kong">
@@ -17,7 +17,7 @@
 			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="button"
 				activeColor="rgba(36,158,222,0.8)"></uni-segmented-control>
 			<view class="content">
-				<view v-show="current === 0" class="neirong1">
+				<view v-show="current === 0" class="neirong1" @click="toDetail">
 					<text>中华人民共和国野生动物保护法</text>
 					<text class="txt2">来源：中国人大网</text>
 				</view>
@@ -49,9 +49,9 @@
 					this.current = e.currentIndex;
 				}
 			},
-			toDetail(){
+			toDetail() {
 				uni.navigateTo({
-					url:"/pages/AnimalRegulations/AnimalRegulationDetail"
+					url: "/pages/AnimalRegulations/AnimalRegulationDetail"
 				})
 			}
 		}
@@ -100,19 +100,27 @@
 		background-color: white;
 		border-bottom: 2px solid #ccc
 	}
-	.neirong1{
+
+	.neirong1 {
 		margin-top: 10px;
-		background-color: #f2f2f2; /* 背景颜色 */
-		padding: 18px; /* 内边距 */
-		border-radius: 5px; /* 圆角 */
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
-		font-size: 16px; /* 字体大小 */
-		color: #333; /* 文字颜色 */
+		background-color: #f2f2f2;
+		/* 背景颜色 */
+		padding: 18px;
+		/* 内边距 */
+		border-radius: 5px;
+		/* 圆角 */
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		/* 阴影 */
+		font-size: 16px;
+		/* 字体大小 */
+		color: #333;
+		/* 文字颜色 */
 		display: flex;
 		flex-direction: column;
 		border-bottom: 2px solid lightgray;
 	}
-	.txt2{
+
+	.txt2 {
 		color: #ccc;
 		font-size: 12px;
 	}

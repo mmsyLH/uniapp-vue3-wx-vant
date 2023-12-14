@@ -30,7 +30,7 @@
 			<scroll-view class="scroll3" scroll-y="true">
 			  <template v-if="dwKeList.length === 0">
 			    <!-- 在 dwKeList 为空的情况下展示“该种暂无数据” -->
-			    <van-empty description="该种暂无数据"></van-empty>
+			    <van-empty description="该目暂无数据"></van-empty>
 			  </template>
 			  <template v-else>
 			    <view class="top-item" v-for="(item, index) in dwZhongList" :key="index">
@@ -224,10 +224,10 @@
 	}
 
 	.Active {
-		border-bottom: 3px solid red;
+		border-bottom: 3px solid #1296DB;
 	}
 
 	.Active2 {
-		border-bottom: 3px solid red;
+		border-bottom: 3px solid #1296DB;
 	}
 </style>

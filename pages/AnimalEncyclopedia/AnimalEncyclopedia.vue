@@ -25,6 +25,9 @@
 </template>
 
 <script>
+	import {
+		getRequest
+	} from '@/http/index'
 	import grid from "./grid.vue"
 	import list from "./list.vue"
 	export default {
@@ -43,31 +46,69 @@
 				optimizeCountSql: true,
 				hitCount: false,
 				searchCount: true,
-				pages: 141, //总页数,
+
+				//是否没有更多数据了
+				isNoMore: false,
+				//是否加载中
+				isLoading: false,
+				//是否初始化完成
+				isInit: false,
+				pages: 1, //总页数,
+				pagesize: 10, //一页显示的页数
 			}
 		},
 		onLoad() {
 			// 请求第一页数据
 			this.getAnimals();
 		},
-		methods: {
-			getAnimals() {
-				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/all?pages=1&pagesize=10',
-					success: (res) => {
-						if (res.data.code === 200) {
-							this.records = res.data.message.records;
-							// 这一句代码不能重写，不然有可能出bug!!!!!!!!!!!!!!!!!!!!
-							this.records.forEach(i => i.tags = [i.dwjb].concat(i.dwclass.split(' ')));
-							// this.records.forEach(i => i.tags = (i.dwjb ? [i.dwjb] : ["其他"]).concat(i.dwclass.split(' ')));
-							this.records.forEach(i => i.name = i.dw + (i.dwxm && ` (${i.dwxm})`));
-							console.log(this.records);
-						}
-					},
-					fail: (err) => {
-						console.log(err);
+		//页面滑动到底部监听
+		onReachBottom() {
+			console.log("滑动到底了");
+			console.log("this.isLoading", this.isLoading);
+			console.log("this.isNoMore", this.isNoMore);
+			if (!this.isLoading && !this.isNoMore) { // 如果不在加载中且还有更多数据
+				this.isLoading = true; // 设置加载状态为true
+				// 模拟加载下一页数据
+				this.pages++; // 增加页码
+				this.getAnimals(); // 请求下一页数据
+				// 实际上，这里应该是异步请求数据的操作，请求成功后isLoading应该设置为false
+				// 这里的示例只是模拟请求
+				setTimeout(() => {
+					this.isLoading = false; // 模拟加载完成后将isLoading设置为false
+					// 假设没有更多数据了
+					if (this.records.length >= this.total) {
+						this.isNoMore = true;
 					}
-				});
+				}, 1000);
+			}
+		},
+		methods: {
+			//获取动物数据
+			getAnimals() {
+				const url = `/ysdw/all?pages=${this.pages}&pagesize=${this.pagesize}`;
+				getRequest(url).then(res=>{
+					console.log(res)
+					if (res.code === 200) {
+						const newRecords = res.message.records;
+						newRecords.forEach(i => {
+							i.tags = [i.dwjb].concat(i.dwclass.split(' '));
+							i.name = i.dw + (i.dwxm && ` (${i.dwxm})`);
+						});
+						if (this.pageNo === 1) {
+							// 如果是第一页数据，则直接赋值
+							this.records = newRecords;
+						} else {
+							// 否则追加数据
+							this.records = [...this.records, ...newRecords]; // 追加新数据到records数组
+						}
+						if (newRecords.length < this.pageSize) {
+							this.isNoMore = true;
+						}
+						
+					}
+				}).catch(err=>{
+					console.error(err)
+				})
 			},
 		}
 	}
