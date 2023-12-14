@@ -155,6 +155,7 @@
 			//动物门的点击事件
 			onClickAnimailMen(item) {
 				//选择动物门传递去查询动物纲
+				this.animalsGang=[];
 				this.getAnimalGang(item.name);
 			},
 			//选择图片上传
