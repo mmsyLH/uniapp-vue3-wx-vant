@@ -64,7 +64,9 @@
 </template>
 
 <script>
-	import { getRequest } from '@/http/index'
+	import {
+		getRequest
+	} from '@/http/index'
 	export default {
 		data() {
 			return {
@@ -120,28 +122,19 @@
 				}).catch(err => {
 					console.error(err);
 				});
-		
+
 			},
-			//获取轮播图的动物纲
+			// 获取动物纲信息
 			getAnimalGang(animalsGangName) {
-				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/xx2/' + animalsGangName,
-					success: (res) => {
-						if (res.data.code === 200) {
-							// 过滤掉dwtp为空或者值为"没有图片"的项
-							this.animalsGang = [];
-							res.data.message.forEach(item => {
-								if (item.dwtp != "没有图片") {
-									this.animalsGang.push(item)
-								}
-							});
-							// this.animalsGang = res.data.message.filter(item => item.dwtp && item.dwtp !=="没有图片");
+				getRequest(`/ysdw/xx2/${animalsGangName}`)
+					.then(res => {
+						if (res.code === 200) {
+							this.animalsGang = res.message.filter(item => item.dwtp !== "没有图片");
 						}
-					},
-					fail: (err) => {
+					})
+					.catch(err => {
 						console.error(err);
-					}
-				});
+					});
 			},
 			// 点击图片方法
 			goToSearchPage(index) {
