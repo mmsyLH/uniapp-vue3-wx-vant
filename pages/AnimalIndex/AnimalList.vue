@@ -22,18 +22,21 @@
 
 			<!-- 右侧菜单 -->
 			<scroll-view class="scroll3" scroll-y="true">
-				<view class="top-item" v-for="(item,index) in dwZhongList" :key="index" >
-					<image :src="item.dwtp" width="100px" height="100px" @click="todetail(item)" v-if="item.dwtp!='没有图片'">
-					</image>
-					{{item.dw}}
-				</view>
+			    <view class="top-item" v-for="(item, index) in dwZhongList" :key="index">
+			        <template v-if="item.dwtp && item.dwtp !== '没有图片'">
+			            <image :src="item.dwtp" width="100px" height="100px" @click="todetail(item)"></image>
+			            {{ item.dw }}
+			        </template>
+			    </view>
+				<template v-if="dwZhongList.length==0">
+				    <van-empty description="该科暂无数据"></van-empty>
+				</template>
 			</scroll-view>
 		</view>
 	</view>
 </template>
 
 <script>
-	
 	import http from '@/utils/http'
 	export default {
 		data() {
@@ -45,23 +48,23 @@
 				dwMuList: [],
 				dwKeList: [],
 				dwZhongList: [],
-				dw:"",
+				dw: "",
 				onemu: ""
 			}
 		},
 		async onLoad(query) {
-			console.log("query",query)
+			console.log("query", query)
 			var dw = "肠鳃纲ENTEROPNEUSTA";
 			//根据传过来的参数来请求动物目
 			// this.init(tie)
 			// var mu = this.dwMuList[0]
 			// this.getKe(mu)
-			console.log(query.name)
-			if(query.name!=null){
-				this.dw=query.name
-				
+			// console.log(query.name)
+			if (query.name != null) {
+				this.dw = query.name
+
 			}
-			dw=this.dw;
+			dw = this.dw;
 			await this.getMu(dw)
 			await this.getKe(this.dwMuList[0].dw)
 			await this.getZhong(this.dwKeList[0].dw)
@@ -87,7 +90,6 @@
 				await http(`xx3/${dw}`, {}, {
 					method: 'GET'
 				}).then(res => {
-					console.log("res:",res)
 					const ani = res;
 					ani.forEach(item => {
 						this.dwMuList.push(item);
@@ -118,10 +120,7 @@
 					method: 'GET'
 				}).then(res => {
 					const ani = res;
-					this.dwZhongList = []
-					ani.forEach(item => {
-						this.dwZhongList.push(item);
-					})
+					this.dwZhongList = ani.filter(item => item.dwtp !== ''); // 过滤掉dwtp为空的项
 				}).catch(err => {
 					console.error(err);
 				})
