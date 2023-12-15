@@ -1,7 +1,8 @@
 <template>
 	<view class="container">
 		<view class="t-goods-list" v-if="animalList && animalList.length > 0">
-			<view class="t-goods-item shadow bg-white" v-for="(animal, index) in animalList" :key="index" @click="clickAnimal(animal)">
+			<view class="t-goods-item shadow bg-white" v-for="(animal, index) in animalList" :key="index"
+				@click="clickAnimal(animal)">
 				<image class="t-goods-img" mode="aspectFill" :src="animal.dwtp"></image>
 				<view class="t-goods-name"><text>{{ animal.dw }}</text></view>
 				<view class="t-goods-desc"><text>{{ animal.dwjj }}</text></view>
@@ -12,7 +13,7 @@
 			<view class="t-empty-desc">没有动物哦~</view>
 		</view>
 		<view class="t-loading-more" v-if="isLoading || isNoMore && animalList && animalList.length > 0">
-			<image src="../../static/loading.png"  v-if="isLoading"></image>
+			<image src="../../static/loading.png" v-if="isLoading"></image>
 			<view class="t-loading-desc" v-if="isLoading || isNoMore">
 				{{ isLoading ? '加载中...' : (isNoMore ? '没有更多数据了' : '') }}
 			</view>
@@ -21,6 +22,9 @@
 </template>
 
 <script>
+	import {
+		getRequest
+	} from '../../http';
 	export default {
 		data() {
 			return {
@@ -54,32 +58,27 @@
 			// 获取动物信息
 			animalFuzzyQuery(animalName) {
 				this.isLoading = true;
-				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/cx/' + '猫',
-					success: (res) => {
-						if (res.data.code === 200) {
-							// 过滤掉dwtp为空或者值为"没有图片"的项
-							const filteredAnimals = res.data.message.filter(item => item.dwtp && item.dwtp !==
-								"没有图片");
-							console.log("filteredAnimals", filteredAnimals)
-							if (this.pageNo === 1) {
-								// 如果是第一页数据，则直接赋值
-								this.animalList = filteredAnimals;
-							} else {
-								// 否则追加数据
-								this.animalList = [...this.animalList, ...filteredAnimals];
-							}
-							this.isLoading = false;
-							if (filteredAnimals.length < this.pageSize) {
-								this.isNoMore = true;
-							}
+				getRequest(`/ysdw/cx/${animalName}`).then(res => {
+					if (res.code === 200) {
+						// 过滤掉dwtp为空或者值为"没有图片"的项
+						const filteredAnimals = res.message.filter(item => item.dwtp && item.dwtp !==
+							"");
+						console.log("filteredAnimals", filteredAnimals)
+						if (this.pageNo === 1) {
+							// 如果是第一页数据，则直接赋值
+							this.animalList = filteredAnimals;
+						} else {
+							// 否则追加数据
+							this.animalList = [...this.animalList, ...filteredAnimals];
 						}
-					},
-					fail: (err) => {
-						console.log(err);
 						this.isLoading = false;
+						if (filteredAnimals.length < this.pageSize) {
+							this.isNoMore = true;
+						}
 					}
-				});
+				}).catch(err => {
+					console.error(err);
+				})
 			},
 			// 页面滑动到底部监听--刷新下一页
 			onReachBottom() {
@@ -92,7 +91,6 @@
 			},
 			// 点击动物
 			clickAnimal(animal) {
-				console.log("当前点击的动物id是" + animal.id);
 				uni.navigateTo({
 					url: "/pages/Animaldetails/Animaldetails?id=" + animal.id,
 				})
@@ -127,10 +125,8 @@
 			}
 
 			.t-goods-name {
-				height: 15px;
-				font-size: 28rpx;
+				font-size: 30rpx;
 				color: #000000;
-				// line-height: 30rpx;
 				-webkit-line-clamp: 2;
 				display: -webkit-box;
 				text-overflow: ellipsis;

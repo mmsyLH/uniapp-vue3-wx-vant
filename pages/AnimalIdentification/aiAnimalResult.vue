@@ -12,7 +12,8 @@
 			<!-- 描述详情层 -->
 			<view class="ar-floor__content">
 				<view class="ar-floor__content-sku-img">
-					<image :src="getDataFiled(index, 'baike_info.image_url')" mode="aspectFill" class="styled-image"></image>
+					<image :src="getDataFiled(index, 'baike_info.image_url')" mode="aspectFill" class="styled-image">
+					</image>
 				</view>
 
 				<view class="ar-floor__content-sku-info">
@@ -43,6 +44,9 @@
 </template>
 
 <script>
+	import {
+		getRequest
+	} from '../../http';
 	export default {
 		data() {
 			return {
@@ -65,29 +69,25 @@
 			},
 			//动物识别
 			animalShiBie(tpurl) {
-				uni.request({
-					method: 'GET',
-					url: "http://110.41.178.59:8081//ysdw/AI?tpurl=" + tpurl,
-					success: (res) => {
-						// 如果返回了识别结果，则更新 aiResult 数组
-						if (res && res.data && res.data.message && res.data.message.result) {
-							let list = res.data.message.result.filter(i => i.baike_info.baike_url);
-							if(list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
-							if(list.length == 5) list.pop();
-							if(list.length == 4) this.datalist = list.concat(list).concat(list);
-							if(list.length > 6 && list.length < 12) list.splice(6);
-							if(list.length == 6) this.datalist = list.concat(list);
-							if(list.length > 12) list.splice(12);
-							if(list.length == 12) this.datalist = list;
-							
+				getRequest(`/ysdw/AI?tpurl=${tpurl}`).then(res => {
+					console.log("动物识别res",res);
+						if (res && res.message && res.message.result) {
+							console.log("动物识别res.message.result",res.message.result);
+							let list = res.message.result.filter(i => i.baike_info.baike_url);
+							if (list.length == 1) this.datalist = list;
+							if (list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
+							if (list.length == 5) list.pop();
+							if (list.length == 4) this.datalist = list.concat(list).concat(list);
+							if (list.length > 6 && list.length < 12) list.splice(6);
+							if (list.length == 6) this.datalist = list.concat(list);
+							if (list.length > 12) list.splice(12);
+							if (list.length == 12) this.datalist = list;
 							this.$nextTick(() => {
 								this.$refs.sectors.add(this.datalist);
 							});
 						}
-					},
-					error: (err) => {
-						console.error('animalShiBie error', err);
-					}
+				}).catch(err => {
+					console.error('animalShiBie error', err);
 				})
 			},
 			//对相似度进行处理

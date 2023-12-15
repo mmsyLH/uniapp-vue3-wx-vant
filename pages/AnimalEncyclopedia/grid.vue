@@ -15,6 +15,10 @@
 			<text>保护等级 </text>
 			<text>{{item.dwjb}}</text>
 		</view>
+		<view v-else style="height: 26px;">
+			<text></text>
+			<text></text>
+		</view>
 	</view>
 </template>
 

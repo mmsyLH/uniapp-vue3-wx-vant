@@ -2,7 +2,12 @@
 	font-family: "customicons";
 	/* Project id 2878519 */
 	/* src:url('/static/customicons.ttf') format('truetype'); */
-	src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/font1.ttf') format('truetype');
+	/* src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/font1.ttf') format('truetype'); */
+	/* src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/OPlusSans3-Bold.ttf') format('truetype'); */
+	/* src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/OPlusSans3-ExtraLight.ttf') format('truetype'); */
+	src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/OPlusSans3-Light.ttf') format('truetype');
+	/* src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/OPlusSans3-Medium.ttf') format('truetype'); */
+	/* src: url('https://lhwaimai.oss-cn-beijing.aliyuncs.com/assets/font/OPlusSans3-Regular.ttf') format('truetype'); */
 
 }
 

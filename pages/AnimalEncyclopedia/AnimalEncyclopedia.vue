@@ -9,16 +9,28 @@
 		<view class="index-list">
 			<!-- 列表 -->
 			<view class="index-list" v-if="isList">
-				<block v-for="(item,i) in records" :key="i">
-					<list :item="item"></list>
-					<u-line color="#1296db"></u-line>
-				</block>
+				<template v-for="(item,i) in records" :key="i">
+					<template v-if="item.dwtp!=''">
+						<view @click="toDetail(item.id)">
+							<list :item="item"></list>
+							<u-line color="#1296db"></u-line>
+						</view>
+					</template>
+				</template>
 			</view>
 			<!-- 网格 -->
+			<!-- 			<view class="index-grid" v-if="!isList">
+					<view v-for="(item, i) in records" :key="i" @click="toDetail(item.id)" class="index-grid">
+						<grid :item="item"></grid>
+					</view>
+			</view> -->
+			<!-- 网格2 -->
 			<view class="index-grid" v-if="!isList">
-				<block v-for="(item,i) in records" :key="i">
+				<template v-for="(item, i) in records" :key="i">
+					<template v-if="item.dwtp!=''">
 					<grid :item="item"></grid>
-				</block>
+					</template>
+				</template>
 			</view>
 		</view>
 	</view>
@@ -53,7 +65,7 @@
 				isLoading: false,
 				//是否初始化完成
 				isInit: false,
-				pages: 1, //总页数,
+				pages: 2, //总页数,
 				pagesize: 10, //一页显示的页数
 			}
 		},
@@ -86,7 +98,7 @@
 			//获取动物数据
 			getAnimals() {
 				const url = `/ysdw/all?pages=${this.pages}&pagesize=${this.pagesize}`;
-				getRequest(url).then(res=>{
+				getRequest(url).then(res => {
 					console.log(res)
 					if (res.code === 200) {
 						const newRecords = res.message.records;
@@ -94,6 +106,7 @@
 							i.tags = [i.dwjb].concat(i.dwclass.split(' '));
 							i.name = i.dw + (i.dwxm && ` (${i.dwxm})`);
 						});
+						
 						if (this.pageNo === 1) {
 							// 如果是第一页数据，则直接赋值
 							this.records = newRecords;
@@ -104,10 +117,16 @@
 						if (newRecords.length < this.pageSize) {
 							this.isNoMore = true;
 						}
-						
+
 					}
-				}).catch(err=>{
+				}).catch(err => {
 					console.error(err)
+				})
+			},
+			//跳转到详情页
+			toDetail(id) {
+				uni.navigateTo({
+					url: "/pages/Animaldetails/Animaldetails?id=" + id,
 				})
 			},
 		}
@@ -122,7 +141,17 @@
 	.index-grid {
 		width: 100%;
 		box-sizing: border-box;
+		// display: flex;
+		// flex-wrap: wrap; /* 允许子项换行显示 */
+		// justify-content: space-between; /* 子项两端对齐，实现每行两个元素 */
 	}
+
+	/* 控制网格子项的宽度 */
+	// .gridView {
+	// 	// width: 50%;
+	// 	// width: calc(50% - 10px); /* 让每个网格子项占据一行的一半，减去间隔的宽度 */
+	// 	// margin-bottom: 10px; /* 设置子项之间的垂直间距 */
+	// }
 
 	.index-title {
 		display: flex;

@@ -117,7 +117,8 @@
 							this.tabList.push({
 								name: item.dw
 							});
-						})
+						});
+
 					}
 				}).catch(err => {
 					console.error(err);
@@ -131,6 +132,7 @@
 						if (res.code === 200) {
 							this.animalsGang = res.message.filter(item => item.dwtp !== "");
 						}
+						console.log(this.animalsGang);
 					})
 					.catch(err => {
 						console.error(err);

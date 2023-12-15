@@ -4,12 +4,16 @@
 			<view class="ani-title">
 				<p>{{animal.dw}}{{animal.dwxm}}</p>
 				<p v-if="animal.dwjb">国家{{animal.dwjb}}保护动物</p>
-				<p>{{animal.dwtype}}</p>
+				<!-- <p>{{animal.dwtype}}</p> -->
 			</view>
-			<view class="box_context">
+			<view class="text-box" @tap="showdetail">
 				<text>{{animal.dwjj}}</text>
 			</view>
-			<button>纠错</button>
+			
+			 <view class="button-container">
+			    <button class="correct-button">纠正</button>
+			  </view>
+			
 		</view>
 	</view>
 </template>
@@ -24,7 +28,7 @@
 		},
 		onLoad(query) {
 			console.log(query.id)
-			// var id = '981';   //这个数据有问题
+			 // var id = '22';   //这个数据有问题
 			//根据id查询动物详情
 			this.getAnimalDetailsById(query.id);
 		},
@@ -44,6 +48,11 @@
 						this.isLoading = false;
 					}
 				});
+			},
+			showdetail(){
+				const textBox = this.$refs.textBox;
+				textBox.style.height = 'auto';
+				textBox.style.overflow = 'visible';
 			}
 		}
 	}
@@ -58,16 +67,14 @@
 	}
 
 	.detai_box {
+		margin-top: 100px;
 		width: 100%;
-		height: 750rpx;
-		/* margin-top: 200px; */
-		/* margin-left: 10px; */
+		height: 100%;
 		background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.64) 45%);
 		backdrop-filter: blur(20px);
 		border-radius: 20px;
 		padding: 16px;
 		box-sizing: border-box;
-		/* overflow: hidden; */
 		position: relative;
 		top: 20vh;
 	}
@@ -77,16 +84,8 @@
 	}
 
 	.box_context {
-		height: 525rpx;
-		background-color: #F7F6FF;
-		border-radius: 16px;
-		padding: 8px;
-		/* border: 1px lightblue solid; */
-		/* 设置超出隐藏 */
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		/* overflow: hidden; */
-		-webkit-line-clamp: 14;
+		height: 200px;
+		overflow: hidden;
 	}
 
 	p {
@@ -96,13 +95,23 @@
 	text {
 		word-break: break-all;
 	}
-
-	button {
-		margin-top: 10px;
-		width: 70px;
-		height: 30px;
-		font-size: 10px;
-		margin-left: 260px;
-
-	}
+	.button-container {
+	    display: flex;
+	    justify-content: flex-end; /* 将按钮放置在右侧 */
+	    margin-top: 10px; /* 设置顶部边距 */
+	  }
+	  .correct-button {
+	    background-color: #4CAF50;
+	    color: white;
+	    padding: 10px 20px;
+	    border: none;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    border-radius: 5px;
+	    cursor: pointer;
+		width: 50%;
+	  }
+	
 </style>

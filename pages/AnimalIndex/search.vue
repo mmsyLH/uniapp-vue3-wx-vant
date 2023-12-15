@@ -2,8 +2,8 @@
 	<view class="container">
 		<view class="search-bar">
 			<!-- 搜索框 -->
-			<u-search :placeholder="placeholder" v-model="keyword" @input="inputChange" @search="doSearch(keyword)" 
-			@custom="doSearch(keyword)" maxlength="24">
+			<u-search :placeholder="placeholder" v-model="keyword" @input="inputChange" @search="doSearch(keyword)"
+				@custom="doSearch(keyword)" maxlength="24">
 			</u-search>
 		</view>
 		<!-- 搜索记录 -->
@@ -51,6 +51,9 @@
 </template>
 
 <script>
+	import {
+		getRequest
+	} from '../../http';
 	export default {
 		props: {
 			placeholder: { // 占位符，为输入时显示的内容
@@ -127,28 +130,17 @@
 			// 页面渲染加载热门搜索关键字，后期通过后台获取数据赋值
 			loadHotKeyword() {
 				this.protectedAnimals = [{
-						id: 41,
-						name: '大熊猫41',
-					}
-				];
+					id: 41,
+					name: '大熊猫41',
+				}];
 				//加载后台数据
-				uni.request({
-					url: 'http://110.41.178.59:8081/ysdw/top',
-					success: (res) => {
-						// console.log("返回的数据为:", res.data.message);
-						// console.log("返回的数据为res.data:", res.data);
-						if (res.data.code === 200) {
-							this.protectedAnimals = res.data.message;
-							//console.log("当前的protectedAnimals", JSON.stringify(this.protectedAnimals));
-
-							// 在这里进行相关操作
-							// 例如更新数据到this.animals
-						}
-					},
-					fail: (err) => {
-						console.log(err);
+				getRequest("/ysdw/top").then(res => {
+					if (res.code === 200) {
+						this.protectedAnimals = res.message;
 					}
-				});
+				}).catch(err => {
+					console.error(err);
+				})
 			},
 
 			// 监听输入
@@ -284,13 +276,13 @@
 
 	.record {
 		height: auto;
-		
+
 		.record_heand {
 			height: 50px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin-top:16px;
+			margin-top: 16px;
 		}
 
 		.record_buttom {}

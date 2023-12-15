@@ -14,36 +14,37 @@
 		<view class="main_cate">
 			<!-- 左侧菜单 -->
 			<scroll-view class="scroll2" scroll-y="true">
-<!-- 				<template v-if="dwKeList.length==0">
+				<!-- 				<template v-if="dwKeList.length==0">
 					<van-empty description="该目下暂无科数据"></van-empty>
 				</template> -->
-			    <!-- <template v-else> -->
-			        <view class="top-item" v-for="(item,index) in dwKeList" :key="index">
-			            <text @click="left_menuTab" :data-index="index" :class="left_current === index ? 'Active2':''">
-			                {{item.dw}}
-			            </text>
-			        </view>
-			    <!-- </template> -->
+				<!-- <template v-else> -->
+				<view class="top-item" v-for="(item,index) in dwKeList" :key="index">
+					<text @click="left_menuTab" :data-index="index" :class="left_current === index ? 'Active2':''">
+						{{item.dw}}
+					</text>
+				</view>
+				<!-- </template> -->
 			</scroll-view>
 
 			<!-- 右侧菜单 -->
 			<scroll-view class="scroll3" scroll-y="true">
-			  <template v-if="dwKeList.length === 0">
-			    <!-- 在 dwKeList 为空的情况下展示“该种暂无数据” -->
-			    <van-empty description="该目暂无数据"></van-empty>
-			  </template>
-			  <template v-else>
-			    <view class="top-item" v-for="(item, index) in dwZhongList" :key="index">
-			      <template v-if="item && item.dw">
-			        <image v-if="item.dwtp && item.dwtp !== ''" :src="item.dwtp" width="100px" height="100px" @click="todetail(item)"></image>
-			        {{ item.dw }}
-			      </template>
-			    </view>
-			    <template v-if="dwZhongList.length === 0">
-			      <!-- 在 dwZhongList 为空的情况下展示“该科暂无数据” -->
-			      <van-empty description="该科暂无数据"></van-empty>
-			    </template>
-			  </template>
+				<template v-if="dwKeList.length === 0">
+					<!-- 在 dwKeList 为空的情况下展示“该种暂无数据” -->
+					<van-empty description="该目暂无数据"></van-empty>
+				</template>
+				<template v-else>
+					<view class="top-item" v-for="(item, index) in dwZhongList" :key="index">
+						<template v-if="item && item.dw">
+							<image v-if="item.dwtp && item.dwtp !== ''" :src="item.dwtp" width="100px" height="100px"
+								@click="todetail(item)"></image>
+							{{ item.dw }}
+						</template>
+					</view>
+					<template v-if="dwZhongList.length === 0">
+						<!-- 在 dwZhongList 为空的情况下展示“该科暂无数据” -->
+						<van-empty description="该科暂无数据"></van-empty>
+					</template>
+				</template>
 			</scroll-view>
 
 		</view>
@@ -76,23 +77,26 @@
 			// console.log(query.name)
 			if (query.name != null) {
 				this.dw = query.name
-
 			}
 			dw = this.dw;
 			await this.getMu(dw)
-			await this.getKe(this.dwMuList[0].dw)
-			await this.getZhong(this.dwKeList[0].dw)
-
-
-
+			if (this.dwMuList[0].dw) {
+				await this.getKe(this.dwMuList[0].dw)
+				await this.getZhong(this.dwKeList[0].dw)
+			}
 		},
 		methods: {
 			async top_menuTab(e) {
 				var index = e.currentTarget.dataset.index;
 				this.top_current = index;
 				this.left_current = 0
-				await this.getKe(this.dwMuList[this.top_current].dw)
-				await this.getZhong(this.dwKeList[0].dw)
+				if (this.dwMuList[this.top_current].dw) {
+					await this.getKe(this.dwMuList[this.top_current].dw)
+				}
+				if (this.dwKeList[0].dw) {
+					await this.getZhong(this.dwKeList[0].dw)
+				}
+
 			},
 			left_menuTab(e) {
 				var index2 = e.currentTarget.dataset.index;
@@ -104,31 +108,35 @@
 				await http(`xx3/${dw}`, {}, {
 					method: 'GET'
 				}).then(res => {
+					console.log("resMu", res)
 					const ani = res;
 					this.dwMuList = [];
-					this.dwMuList = ani.filter(item => item.dwtp !== ''); // 过滤掉dwtp为空的项
+					this.dwMuList = ani.filter(item => {
+						// 过滤掉dw为空或者为双尾目的选项的项
+						return item.dw !== '' && item.dw !== '双尾目';
+					});
 					console.log("this.dwMuList", this.dwMuList);
 				}).catch(err => {
 					console.error("获取目失败", err);
 				})
 			},
 			//获得动物科
-			async getKe(dw) {
-				// xx4/${dw}
-				await http(`xx4/${dw}`, {}, {
-					method: 'GET'
-				}).then(res => {
-					const ani = res;
-					this.dwKeList = [];
-					console.log("res", res.length);
-					if (res.length != 0) {
-						console.log("123")
-						this.dwKeList = ani.filter(item => item.dwtp !== ''); // 过滤掉dwtp为空的项
-					}
-					console.log("this.dwKeList", this.dwKeList)
-				}).catch(err => {
-					console.error(err);
-				})
+			async getKe(dw) { //指的是传过来的动物目的姓名
+				if (dw != null) {
+					await http(`xx4/${dw}`, {}, {
+						method: 'GET'
+					}).then(res => {
+						const ani = res;
+						this.dwKeList = [];
+						if (res.length != 0) {
+							this.dwKeList = ani.filter(item => item.dw !== ''); // 过滤掉dwtp为空的项
+						}
+						console.log("this.dwKeList", this.dwKeList)
+					}).catch(err => {
+						console.error(err);
+					})
+				}
+
 			},
 			//获取动物种
 			async getZhong(dw) {
