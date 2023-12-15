@@ -1,6 +1,5 @@
 <template class="container">
-	<u-empty mode="search" icon="http://cdn.uviewui.com/uview/empty/car.png" v-if="isLoading"></u-empty>
-	<view class="ar-floor view" v-else>
+	<view class="ar-floor view">
 		<div class="z-title">《《动物识别结果》》</div>
 		<view class="ar-floor__wrapper">
 			<!-- 背景层 -->
@@ -33,9 +32,9 @@
 							{{getDataFiled(index, 'name')}}
 						</view>
 						<template v-if="isAnimail">
-							<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
-								查看百科
-							</view>
+						<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
+							查看百科
+						</view>
 						</template>
 					</view>
 					<view class="sku-info-bottom">
@@ -76,7 +75,6 @@
 				index: 0,
 				isAnimail: true,
 				tpurl: '',
-				isLoading: true, // 设置加载状态为true
 			}
 		},
 		onLoad(query) {
@@ -99,7 +97,6 @@
 					console.log("动物识别res", res);
 					if (res && res.message && res.message.result) {
 						console.log("动物识别res.message.result", res.message.result);
-						this.isLoading = false; // 加载完成后设置 isLoading 为 false
 						let list = res.message.result.filter(i => i.baike_info.baike_url);
 						if (res.message.result.length == 1) {
 							this.datalist = res.message.result;
@@ -114,11 +111,11 @@
 						if (list.length == 12) this.datalist = list;
 						this.$nextTick(() => {
 							this.$refs.sectors.add(this.datalist);
-							this.isLoading = false; // 处理加载失败的情况，也要将 isLoading 设置为 false
 						});
 					}
 				}).catch(err => {
 					console.error('animalShiBie error', err);
+					
 				})
 			},
 			//对相似度进行处理
@@ -141,6 +138,7 @@
 					url: '/pages/AnimalIdentification/baidu?url=' + encodeURIComponent(url),
 				});
 			},
+			//回到首页重新选择
 			toIndex(){
 				uni.switchTab({
 					url:"/pages/AnimalIndex/AnimalIndex"
@@ -159,7 +157,10 @@
 		max-width: 100px;
 		margin: 20% auto auto auto;
 	}
-
+	
+	.view{
+		margin:0 auto;
+	}
 	.ar-floor {
 		width: 100%;
 		min-height: 100vh;

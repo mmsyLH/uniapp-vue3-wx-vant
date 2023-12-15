@@ -1,4 +1,5 @@
 <template>
+
 	<view class="container">
 		<!-- https://gitee.com/flexming/dcloud_animals_list.git -->
 		<view class="index-title">
@@ -34,7 +35,10 @@
 			</view>
 		</view>
 	</view>
-	<up-back-top :scroll-top="scrollTop"></up-back-top>
+	<view class="toTop" @click="toTop" v-if="scrollTop">
+		<u-icon name="arrow-upward" color="#2979ff" size="28"></u-icon>
+	</view>
+	<!-- <up-back-top :scroll-top="scrollTop"></up-back-top> -->
 </template>
 
 <script>
@@ -68,7 +72,8 @@
 				isInit: false,
 				pages: 2, //总页数,
 				pagesize: 10, //一页显示的页数
-				scrollTop: 0, //返回顶部
+				scrollTop: false, //返回顶部
+				
 			}
 		},
 		onLoad() {
@@ -76,23 +81,24 @@
 			this.getAnimals();
 		},
 		//监听页面滚动
-		onPageScroll(e) {
-			// console.log(e)
-			// 只有当页面滚动时才更新 scrollTop
-			if (!this.isLoading) {
-				this.scrollTop = e.scrollTop;
-				console.log(this.scrollTop);
-				// 使用节流，每隔一段时间（比如100毫秒）更新一次数据
-				if (this.scrollTimer) clearTimeout(this.scrollTimer);
-				this.scrollTimer = setTimeout(() => {
-					// 触发加载数据的方法
-					// this.getAnimals();
-					// 选择了用页面滑动到底去更新数据
-				}, 1000); // 100毫秒作为示例，你可以根据需要调整时间间隔
-			}
-		},
+		// onPageScroll(e) {
+		// 	// console.log(e)
+		// 	// 只有当页面滚动时才更新 scrollTop
+		// 	if (!this.isLoading) {
+		// 		console.log(this.scrollTop);
+		// 		// 使用节流，每隔一段时间（比如100毫秒）更新一次数据
+		// 		this.scrollTimer = setTimeout(() => {
+		// 			this.scrollTop = e.scrollTop;
+		// 			if (this.scrollTimer) clearTimeout(this.scrollTimer);
+		// 			// 触发加载数据的方法
+		// 			// this.getAnimals();
+		// 			// 选择了用页面滑动到底去更新数据
+		// 		}, 800);
+		// 	}
+		// },
 		//页面滑动到底部监听
 		onReachBottom() {
+			this.scrollTop=true
 			console.log("滑动到底了");
 			console.log("this.isLoading", this.isLoading);
 			console.log("this.isNoMore", this.isNoMore);
@@ -146,11 +152,32 @@
 					url: "/pages/Animaldetails/Animaldetails?id=" + id,
 				})
 			},
+			//回到顶部
+			toTop() {
+				uni.pageScrollTo({
+					scrollTop: 0, // 将页面滚动到顶部
+					duration: 300, // 可选：滚动到顶部的持续时间，单位为毫秒
+					
+				});
+				this.scrollTop=false;
+				console.log("this.scrollTop",this.scrollTop)
+			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.toTop {
+		position: fixed;
+		/* 让图标固定在屏幕上 */
+		bottom: 20px;
+		/* 距离屏幕底部的距离 */
+		right: 20px;
+		/* 距离屏幕右侧的距离 */
+		z-index: 999;
+		/* 确保图标在最上层 */
+	}
+
 	.wrap {
 		// height: 200vh;
 	}
