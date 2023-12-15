@@ -18,6 +18,7 @@
 				{{ isLoading ? '加载中...' : (isNoMore ? '没有更多数据了' : '') }}
 			</view>
 		</view>
+		<up-back-top :scroll-top="scrollTop"></up-back-top>
 	</view>
 </template>
 
@@ -40,6 +41,7 @@
 				isLoading: false,
 				//是否初始化完成
 				isInit: false,
+				scrollTop: 0, //返回顶部
 			}
 		},
 		onLoad(query) {
@@ -48,6 +50,9 @@
 			this.isLoading = true;
 			// 请求第一页数据
 			this.animalFuzzyQuery(query.name); // 可以传递参数来模糊查询动物信息
+		},
+		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
 		},
 		//页面滑动到底部监听
 		onReachBottom() {

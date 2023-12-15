@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { getRequest } from '../../http';
 	export default {
 		data() {
 			return {

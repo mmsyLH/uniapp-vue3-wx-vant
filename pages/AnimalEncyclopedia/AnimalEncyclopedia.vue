@@ -28,12 +28,13 @@
 			<view class="index-grid" v-if="!isList">
 				<template v-for="(item, i) in records" :key="i">
 					<template v-if="item.dwtp!=''">
-					<grid :item="item"></grid>
+						<grid :item="item"></grid>
 					</template>
 				</template>
 			</view>
 		</view>
 	</view>
+	<up-back-top :scroll-top="scrollTop"></up-back-top>
 </template>
 
 <script>
@@ -49,7 +50,7 @@
 		},
 		data() {
 			return {
-				isList: 1,
+				isList: 0,
 				records: [], //动物数组
 				total: 1409, //总数量
 				size: 10, //本页数量
@@ -67,11 +68,28 @@
 				isInit: false,
 				pages: 2, //总页数,
 				pagesize: 10, //一页显示的页数
+				scrollTop: 0, //返回顶部
 			}
 		},
 		onLoad() {
 			// 请求第一页数据
 			this.getAnimals();
+		},
+		//监听页面滚动
+		onPageScroll(e) {
+			// console.log(e)
+			// 只有当页面滚动时才更新 scrollTop
+			if (!this.isLoading) {
+				this.scrollTop = e.scrollTop;
+				console.log(this.scrollTop);
+				// 使用节流，每隔一段时间（比如100毫秒）更新一次数据
+				if (this.scrollTimer) clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					// 触发加载数据的方法
+					// this.getAnimals();
+					// 选择了用页面滑动到底去更新数据
+				}, 1000); // 100毫秒作为示例，你可以根据需要调整时间间隔
+			}
 		},
 		//页面滑动到底部监听
 		onReachBottom() {
@@ -83,20 +101,19 @@
 				// 模拟加载下一页数据
 				this.pages++; // 增加页码
 				this.getAnimals(); // 请求下一页数据
-				// 实际上，这里应该是异步请求数据的操作，请求成功后isLoading应该设置为false
-				// 这里的示例只是模拟请求
 				setTimeout(() => {
 					this.isLoading = false; // 模拟加载完成后将isLoading设置为false
 					// 假设没有更多数据了
 					if (this.records.length >= this.total) {
 						this.isNoMore = true;
 					}
-				}, 1000);
+				}, 300);
 			}
 		},
 		methods: {
 			//获取动物数据
 			getAnimals() {
+				this.isLoading = true;
 				const url = `/ysdw/all?pages=${this.pages}&pagesize=${this.pagesize}`;
 				getRequest(url).then(res => {
 					console.log(res)
@@ -106,7 +123,7 @@
 							i.tags = [i.dwjb].concat(i.dwclass.split(' '));
 							i.name = i.dw + (i.dwxm && ` (${i.dwxm})`);
 						});
-						
+
 						if (this.pageNo === 1) {
 							// 如果是第一页数据，则直接赋值
 							this.records = newRecords;
@@ -117,8 +134,8 @@
 						if (newRecords.length < this.pageSize) {
 							this.isNoMore = true;
 						}
-
 					}
+					this.isLoading = false;
 				}).catch(err => {
 					console.error(err)
 				})
@@ -134,6 +151,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.wrap {
+		// height: 200vh;
+	}
+
 	.index-list {
 		width: 100%;
 	}
