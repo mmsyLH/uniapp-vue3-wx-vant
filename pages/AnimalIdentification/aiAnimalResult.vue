@@ -1,5 +1,6 @@
 <template class="container">
-	<view class="ar-floor view">
+	<u-empty mode="search" icon="http://cdn.uviewui.com/uview/empty/car.png" v-if="isLoading"></u-empty>
+	<view class="ar-floor view" v-else>
 		<div class="z-title">《《动物识别结果》》</div>
 		<view class="ar-floor__wrapper">
 			<!-- 背景层 -->
@@ -11,9 +12,19 @@
 			</view>
 			<!-- 描述详情层 -->
 			<view class="ar-floor__content">
+
 				<view class="ar-floor__content-sku-img">
-					<image :src="getDataFiled(index, 'baike_info.image_url')" mode="aspectFill" class="styled-image">
-					</image>
+					<!-- 是动物展示动物图片 -->
+					<template v-if="isAnimail">
+						<image :src="getDataFiled(index, 'baike_info.image_url')" mode="aspectFill"
+							class="styled-image">
+						</image>
+					</template>
+					<!-- 不是动物展示传过来的图片 -->
+					<template v-else>
+						<image :src="tpurl" mode="aspectFill" class="styled-image2" style="">
+						</image>
+					</template>
 				</view>
 
 				<view class="ar-floor__content-sku-info">
@@ -21,9 +32,11 @@
 						<view class="animal-name">
 							{{getDataFiled(index, 'name')}}
 						</view>
-						<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
-							查看百科
-						</view>
+						<template v-if="isAnimail">
+							<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
+								查看百科
+							</view>
+						</template>
 					</view>
 					<view class="sku-info-bottom">
 						<view class="score score--number score--large price">
@@ -34,10 +47,19 @@
 					</view>
 				</view>
 				<!-- 轮播层 -->
-				<view class="turntable">
-					<!-- 轮播组件 -->
-					<siucat-sectors ref='sectors' @Chend='Chend'></siucat-sectors>
-				</view>
+				<template v-if="isAnimail">
+					<view class="turntable">
+						<!-- 轮播组件 -->
+						<siucat-sectors ref='sectors' @Chend='Chend'></siucat-sectors>
+					</view>
+				</template>
+				<template v-else>
+					<view class="centered-container">
+						<up-button text="重新选择" size="small"
+							@click="toIndex"
+							color="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))"></up-button>
+					</view>
+				</template>
 			</view>
 		</view>
 	</view>
@@ -52,12 +74,16 @@
 			return {
 				datalist: [],
 				index: 0,
+				isAnimail: true,
+				tpurl: '',
+				isLoading: true, // 设置加载状态为true
 			}
 		},
 		onLoad(query) {
+			this.tpurl = query.tpurl;
 			//获取ai查询数据
 			// this.animalShiBie("http://s4s1fr5or.hn-bkt.clouddn.com/FhfXgcZNFC19VEU620T4puco0Tzf"); // 测试代码
-			this.animalShiBie(query.tpurl); // 测试代码
+			this.animalShiBie(this.tpurl); // 测试代码
 		},
 		created() {},
 		methods: {
@@ -70,22 +96,27 @@
 			//动物识别
 			animalShiBie(tpurl) {
 				getRequest(`/ysdw/AI?tpurl=${tpurl}`).then(res => {
-					console.log("动物识别res",res);
-						if (res && res.message && res.message.result) {
-							console.log("动物识别res.message.result",res.message.result);
-							let list = res.message.result.filter(i => i.baike_info.baike_url);
-							if (list.length == 1) this.datalist = list;
-							if (list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
-							if (list.length == 5) list.pop();
-							if (list.length == 4) this.datalist = list.concat(list).concat(list);
-							if (list.length > 6 && list.length < 12) list.splice(6);
-							if (list.length == 6) this.datalist = list.concat(list);
-							if (list.length > 12) list.splice(12);
-							if (list.length == 12) this.datalist = list;
-							this.$nextTick(() => {
-								this.$refs.sectors.add(this.datalist);
-							});
+					console.log("动物识别res", res);
+					if (res && res.message && res.message.result) {
+						console.log("动物识别res.message.result", res.message.result);
+						this.isLoading = false; // 加载完成后设置 isLoading 为 false
+						let list = res.message.result.filter(i => i.baike_info.baike_url);
+						if (res.message.result.length == 1) {
+							this.datalist = res.message.result;
+							this.isAnimail = false;
 						}
+						if (list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
+						if (list.length == 5) list.pop();
+						if (list.length == 4) this.datalist = list.concat(list).concat(list);
+						if (list.length > 6 && list.length < 12) list.splice(6);
+						if (list.length == 6) this.datalist = list.concat(list);
+						if (list.length > 12) list.splice(12);
+						if (list.length == 12) this.datalist = list;
+						this.$nextTick(() => {
+							this.$refs.sectors.add(this.datalist);
+							this.isLoading = false; // 处理加载失败的情况，也要将 isLoading 设置为 false
+						});
+					}
 				}).catch(err => {
 					console.error('animalShiBie error', err);
 				})
@@ -110,11 +141,25 @@
 					url: '/pages/AnimalIdentification/baidu?url=' + encodeURIComponent(url),
 				});
 			},
+			toIndex(){
+				uni.switchTab({
+					url:"/pages/AnimalIndex/AnimalIndex"
+				})
+			},
 		}
 	}
 </script>
 
 <style scoped>
+	/* 重新选择的按钮样式 */
+	.centered-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		max-width: 100px;
+		margin: 20% auto auto auto;
+	}
+
 	.ar-floor {
 		width: 100%;
 		min-height: 100vh;
@@ -243,6 +288,14 @@
 		/* 保持圆角 */
 	}
 
+	.styled-image2 {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		/* 让图片填充整个容器 */
+		border-radius: 50%;
+		/* 保持圆角 */
+	}
 
 	.ar-floor__content-sku-info {
 		position: relative;

@@ -9,6 +9,7 @@ const whiteList = [
 	'/pages/AnimalIndex/AnimalList',
 	'/pages/AnimalIndex/search',
 	'/pages/AnimalIndex/searchResult',
+	'/pages/AnimalIndex/AnimalIndex',
 	'/pages/AnimalRegulations/AnimalRegulations',
 	'/pages/AnimalRegulations/AnimalRegulationDetail',
 ]

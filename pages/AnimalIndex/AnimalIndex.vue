@@ -16,7 +16,7 @@
 				    color: '#1296db',
 				    fontWeight: 'bold',
 				    transform: 'scale(1.05)'
-				}" lineWidth="100">
+				}" lineWidth="40">
 			</u-tabs>
 		</view>
 		<u-line></u-line>
@@ -32,7 +32,8 @@
 			<swiper :current="currentIndex" class="swiper" :duration="1000" :circular="true"
 				:previousMargin="previous_next" :nextMargin="previous_next" @change="swiperTab">
 				<swiper-item v-for="(animal, index) in animalsGang" :key="index">
-					<view class="animal-text">{{ animal.dw }}</view>
+					<view class="animal-text" v-if="animal && animal.dw">{{ extractChineseName(animal.dw) }}</view>
+
 					<view class="swiper-item">
 						<!-- 条件渲染 -->
 						<view v-if="animal.dwtp">
@@ -110,20 +111,17 @@
 			getAnimalMen() {
 				getRequest('/ysdw/xx1').then(res => {
 					if (res.code === 200) {
-						// 过滤掉dwtp为空或者值为"没有图片"的项
-						this.animalsMen = res.message.filter(item => item.dwtp && item.dwtp !==
-							"");
-						this.animalsMen.forEach(item => {
-							this.tabList.push({
-								name: item.dw
-							});
-						});
-
+						// 过滤掉dwtp为空或者值为"没有图片"的项，并提取中文名
+						this.animalsMen = res.message.filter(item => item.dwtp && item.dwtp !== "")
+							.map(item => ({
+								name: this.extractChineseName(item.dw)
+							}));
+						this.tabList = this.animalsMen; // 更新 tabList，这里假设 tabList 需要与 animalsMen 保持一致
+						console.log("this.tabList",this.tabList)
 					}
 				}).catch(err => {
 					console.error(err);
 				});
-
 			},
 			// 获取动物纲信息
 			getAnimalGang(animalsGangName) {
@@ -168,9 +166,9 @@
 								count: 1,
 								sourceType: ['album'],
 								success: (res) => {
-									console.log("选择相册的结果:", res)
+									// console.log("选择相册的结果:", res)
 									this.src = res.tempFilePaths[0];
-									console.log(JSON.stringify(res.tempFilePaths));
+									// console.log(JSON.stringify(res.tempFilePaths));
 									//上传文件
 									this.getqntoken();
 								},
@@ -184,9 +182,9 @@
 								count: 1,
 								sourceType: ['camera'],
 								success: (res) => {
-									console.log("选择相册的结果:", res)
+									// console.log("选择相册的结果:", res)
 									this.src = res.tempFilePaths[0];
-									console.log(JSON.stringify(res.tempFilePaths));
+									// console.log(JSON.stringify(res.tempFilePaths));
 									//获取七牛云token
 									this.getqntoken();
 								},
@@ -206,7 +204,6 @@
 				uni.showLoading({
 					title: '加载中...',
 				});
-				console.log("正在获取七牛云token")
 				//因为图片上传和ai识别是一连串的 所以不使用封装好的请求工具  这样更好处理统一加载中的动画
 				uni.request({
 					url: 'http://110.41.178.59:8080/user/getqntoken',
@@ -227,7 +224,6 @@
 
 			//上传文件到七牛云
 			uploadFileToQn() {
-				console.log("上传文件时七牛云的token", this.qntoken);
 				wx.uploadFile({
 					url: 'https://upload-z2.qiniup.com',
 					filePath: this.src,
@@ -237,7 +233,7 @@
 						'token': this.qntoken
 					},
 					success: (res) => {
-						console.log("上传七牛云的res", res)
+						// console.log("上传七牛云的res", res)
 						let strToObj = JSON.parse(res.data);
 						this.tpurl = "http://s4s1fr5or.hn-bkt.clouddn.com/" + strToObj.key;
 						this.animalShiBie(this.tpurl);
@@ -253,7 +249,6 @@
 				uni.navigateTo({
 					url: '/pages/AnimalIdentification/aiAnimalResult?tpurl=' + tpurl,
 					success: () => {
-						console.log('跳转成功');
 						uni.hideLoading(); // 隐藏加载动画
 					},
 					fail: (err) => {
@@ -293,7 +288,12 @@
 					}
 				});
 			},
-
+			//正则表达式筛选中文动物名
+			extractChineseName(name) {
+				const regex = /[\u4e00-\u9fa5]+/g; // 匹配中文字符的正则表达式
+				const matches = name.match(regex); // 使用正则表达式匹配中文字符
+				return matches ? matches.join('') : ''; // 返回匹配到的中文字符组成的字符串
+			},
 		},
 	};
 </script>

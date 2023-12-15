@@ -9,7 +9,6 @@
 		</view>
 
 		<view class="grid-comment">
-			<!-- {{'0'|filterComment}}条评论 月销量 {{'0'|filterComment}} -->
 		</view>
 		<view class="grid-box-price" v-if="item.dwjb">
 			<text>保护等级 </text>
@@ -42,7 +41,6 @@
 		margin-bottom: 15rpx;
 		border-radius: 15rpx;
 		overflow: hidden;
-
 		.grid-comment {
 			width: 100%;
 			margin-top: 15rpx;
