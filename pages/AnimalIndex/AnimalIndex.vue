@@ -117,7 +117,7 @@
 								name: this.extractChineseName(item.dw)
 							}));
 						this.tabList = this.animalsMen; // 更新 tabList，这里假设 tabList 需要与 animalsMen 保持一致
-						console.log("this.tabList",this.tabList)
+						console.log("this.tabList", this.tabList)
 					}
 				}).catch(err => {
 					console.error(err);
@@ -246,15 +246,39 @@
 			// AI动物识别 方法重载
 			animalShiBie(tpurl) {
 				// 在上传成功后进行页面跳转到 aiAnimalResult.vue，并携带 tpurl 参数
-				uni.navigateTo({
-					url: '/pages/AnimalIdentification/aiAnimalResult?tpurl=' + tpurl,
-					success: () => {
-						uni.hideLoading(); // 隐藏加载动画
-					},
-					fail: (err) => {
-						console.error('跳转失败', err);
-					}
-				});
+				// uni.navigateTo({
+				// 	url: '/pages/AnimalIdentification/aiAnimalResult?tpurl=' + tpurl,
+				// 	success: () => {
+						
+				// 		uni.hideLoading(); // 隐藏加载动画
+				// 	},
+				// 	fail: (err) => {
+				// 		console.error('跳转失败', err);
+				// 	}
+				// });
+				getRequest(`/ysdw/AI?tpurl=${tpurl}`).then(res => {
+					uni.hideLoading()
+					console.log("动物识别res", res);
+					uni.setStorage({
+						key:"datalist",
+						data:res,
+						success() {
+							uni.navigateTo({
+								url: '/pages/AnimalIdentification/aiAnimalResult?tpurl='+tpurl,
+								success: () => {
+									
+									uni.hideLoading(); // 隐藏加载动画
+								},
+								fail: (err) => {
+									console.error('跳转失败', err);
+								}
+							});
+						}
+					})
+					
+				}).catch(err => {
+					console.error('animalShiBie error', err);
+				})
 			},
 			//获取相机权限
 			checkCameraPermission() {
@@ -419,6 +443,8 @@
 	.animal-text {
 		font-weight: bold;
 		text-align: center;
-		margin-bottom: 8px;
+		width: 606rpx;
+		
+		margin-top: 3%;
 	}
 </style>

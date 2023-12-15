@@ -1,6 +1,6 @@
 <template class="container">
 	<view class="ar-floor view">
-		<div class="z-title">《《动物识别结果》》</div>
+
 		<view class="ar-floor__wrapper">
 			<!-- 背景层 -->
 			<view class="color ar-colorful-bg">
@@ -32,9 +32,9 @@
 							{{getDataFiled(index, 'name')}}
 						</view>
 						<template v-if="isAnimail">
-						<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
-							查看百科
-						</view>
+							<view class="try-btn" @click="goToBaike(getDataFiled(index, 'baike_info.baike_url'))">
+								查看百科
+							</view>
 						</template>
 					</view>
 					<view class="sku-info-bottom">
@@ -54,13 +54,13 @@
 				</template>
 				<template v-else>
 					<view class="centered-container">
-						<up-button text="重新选择" size="small"
-							@click="toIndex"
+						<up-button text="重新选择" size="small" @click="toIndex"
 							color="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))"></up-button>
 					</view>
 				</template>
 			</view>
 		</view>
+
 	</view>
 </template>
 
@@ -78,10 +78,13 @@
 			}
 		},
 		onLoad(query) {
+			uni.showLoading({
+				title: "加载中"
+			})
 			this.tpurl = query.tpurl;
 			//获取ai查询数据
 			// this.animalShiBie("http://s4s1fr5or.hn-bkt.clouddn.com/FhfXgcZNFC19VEU620T4puco0Tzf"); // 测试代码
-			this.animalShiBie(this.tpurl); // 测试代码
+			this.animalShiBie("this.tpurl"); // 测试代码
 		},
 		created() {},
 		methods: {
@@ -93,33 +96,63 @@
 			},
 			//动物识别
 			animalShiBie(tpurl) {
-				getRequest(`/ysdw/AI?tpurl=${tpurl}`).then(res => {
-					console.log("动物识别res", res);
-					if (res && res.message && res.message.result) {
-						console.log("动物识别res.message.result", res.message.result);
-						let list = res.message.result.filter(i => i.baike_info.baike_url);
-						if (res.message.result.length == 1) {
-							this.datalist = res.message.result;
-							this.isAnimail = false;
+				// getRequest(`/ysdw/AI?tpurl=${tpurl}`).then(res => {
+				// 	uni.hideLoading()
+				// 	console.log("动物识别res", res);
+				// 	if (res && res.message && res.message.result) {
+				// 		console.log("动物识别res.message.result", res.message.result);
+				// 		let list = res.message.result.filter(i => i.baike_info.baike_url);
+				// 		if (res.message.result.length == 1) {
+				// 			this.datalist = res.message.result;
+				// 			this.isAnimail = false;
+				// 		}
+				// 		if (list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
+				// 		if (list.length == 5) list.pop();
+				// 		if (list.length == 4) this.datalist = list.concat(list).concat(list);
+				// 		if (list.length > 6 && list.length < 12) list.splice(6);
+				// 		if (list.length == 6) this.datalist = list.concat(list);
+				// 		if (list.length > 12) list.splice(12);
+				// 		if (list.length == 12) this.datalist = list;
+				// 		this.$nextTick(() => {
+				// 			this.$refs.sectors.add(this.datalist);
+				// 		});
+				// 	}
+				// }).catch(err => {
+				// 	console.error('animalShiBie error', err);
+				// })
+				var that=this
+				uni.getStorage({
+					key: 'datalist',
+					success: function(res) {
+						var res=res.data
+						console.log(res)
+						if (res && res.message && res.message.result) {
+							console.log("动物识别res.message.result", res.message.result);
+							let list = res.message.result.filter(i => i.baike_info.baike_url);
+							if (res.message.result.length == 1) {
+								that.datalist = res.message.result;
+								that.isAnimail = false;
+							}
+							if (list.length == 3) that.datalist = list.concat(list).concat(list).concat(list);
+							if (list.length == 5) list.pop();
+							if (list.length == 4) that.datalist = list.concat(list).concat(list);
+							if (list.length > 6 && list.length < 12) list.splice(6);
+							if (list.length == 6) that.datalist = list.concat(list);
+							if (list.length > 12) list.splice(12);
+							if (list.length == 12) that.datalist = list;
+							that.$nextTick(() => {
+								that.$refs.sectors.add(that.datalist);
+							});
+							
+							
 						}
-						if (list.length == 3) this.datalist = list.concat(list).concat(list).concat(list);
-						if (list.length == 5) list.pop();
-						if (list.length == 4) this.datalist = list.concat(list).concat(list);
-						if (list.length > 6 && list.length < 12) list.splice(6);
-						if (list.length == 6) this.datalist = list.concat(list);
-						if (list.length > 12) list.splice(12);
-						if (list.length == 12) this.datalist = list;
-						this.$nextTick(() => {
-							this.$refs.sectors.add(this.datalist);
-						});
+						
 					}
-				}).catch(err => {
-					console.error('animalShiBie error', err);
-					
 				})
 			},
 			//对相似度进行处理
 			formatScore(score) {
+
 				// 将小数转换为保留两位小数的字符串
 				const formattedScore = (parseFloat(score) * 100).toFixed(2);
 				// 如果相似度小于 0.7，生成一个 80 到 99 的随机数
@@ -138,12 +171,6 @@
 					url: '/pages/AnimalIdentification/baidu?url=' + encodeURIComponent(url),
 				});
 			},
-			//回到首页重新选择
-			toIndex(){
-				uni.switchTab({
-					url:"/pages/AnimalIndex/AnimalIndex"
-				})
-			},
 		}
 	}
 </script>
@@ -157,16 +184,16 @@
 		max-width: 100px;
 		margin: 20% auto auto auto;
 	}
-	
-	.view{
-		margin:0 auto;
-	}
+
 	.ar-floor {
 		width: 100%;
 		min-height: 100vh;
 		/* font-family: "customicons" !important; */
 		background-color: #1F0020;
 		overflow: hidden;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.z-title {

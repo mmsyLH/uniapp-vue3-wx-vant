@@ -82,31 +82,31 @@
 
 	"tabBar": {
 		"color": "#7A7E83",
-		"selectedColor": "#3cc51f",
+		"selectedColor": "#0052d9",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
 			"pagePath": "pages/AnimalIndex/AnimalIndex",
-			"iconPath": "static/tabbar/home.png",
-			"selectedIconPath": "static/tabbar/home-active.png",
-			"text": "保护动物名录"
+			"iconPath": "static/tabbar/tab1.png",
+			"selectedIconPath": "static/tabbar/tab1_select.png",
+			"text": "动物名录"
 		}, {
 			"pagePath": "pages/AnimalEncyclopedia/AnimalEncyclopedia",
-			"iconPath": "static/tabbar/wiki.png",
-			"selectedIconPath": "static/tabbar/wiki-active.png",
+			"iconPath": "static/tabbar/tab2.png",
+			"selectedIconPath": "static/tabbar/tab2_select.png",
 			"text": "动物百科"
 		}, {
 			"pagePath": "pages/AnimalRegulations/AnimalRegulations",
-			"iconPath": "static/tabbar/my.png",
-			"selectedIconPath": "static/tabbar/my-active.png",
+			"iconPath": "static/tabbar/tab3.png",
+			"selectedIconPath": "static/tabbar/tab3_select.png",
 			"text": "相关法规"
 		}]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#1296db",
-		"backgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#0052d9",
+		"backgroundColor": "#0052d9",
 		"navigationBarTextStyle": "white",
 		"app-plus": {
 			"background": "#efeff4"
